@@ -176,7 +176,7 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
     
     String asPolyNumber();
     
-    
+    List<MSet> getContent();
     
                
 }

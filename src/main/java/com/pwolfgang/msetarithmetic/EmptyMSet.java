@@ -17,7 +17,9 @@
  */
 package com.pwolfgang.msetarithmetic;
 
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -111,5 +113,10 @@ public class EmptyMSet implements MSet {
     @Override
     public String asPolyNumber() {
         return "0";
+    }
+    
+    @Override
+    public List<MSet> getContent() {
+        return Collections.emptyList();
     }
 }

@@ -56,7 +56,7 @@ public class MSetTest3 {
    
     @Test
     public void testAlphaZero() {
-        MSet alphaZero = MSet.of(MSet.of(1));
+        var alphaZero = MSet.of(MSet.of(MSet.of(0)));
         var twoAlphaZero = MSet.add(alphaZero, alphaZero);
         var threeAlphaZero = MSet.add(twoAlphaZero, alphaZero);
         var fourAlphaZero = MSet.add(twoAlphaZero, twoAlphaZero);
@@ -92,7 +92,7 @@ public class MSetTest3 {
     
     @Test
     public void testAlphaOne() {
-        MSet alphaOne = MSet.of(MSet.of(MSet.of(1)));
+        var alphaOne = MSet.of(MSet.of(MSet.of(1)));
         var twoAlphaOne = MSet.add(alphaOne, alphaOne);
         var threeAlphaOne = MSet.add(twoAlphaOne, alphaOne);
         var fourAlphaOne = MSet.add(twoAlphaOne, twoAlphaOne);
@@ -128,7 +128,7 @@ public class MSetTest3 {
     @Test
 
     public void testAlphaTwo() {
-        var alphaZero = MSet.of(MSet.of(1));
+        var alphaZero = MSet.of(MSet.of(MSet.of(0)));
         var alphaZeroSq = MSet.mul(alphaZero,alphaZero);
         var alphaOne = MSet.of(alphaZero);
         var alphaTwo = MSet.of(alphaZeroSq);
@@ -168,8 +168,10 @@ public class MSetTest3 {
     
     @Test
     public void testAlphaZero4thPlusAlphaZero3rd() {
-        var alphaZero4th = MSet.of(MSet.of(4));
-        var alphaZero3rd = MSet.of(MSet.of(3));
+        var alphaZero = MSet.of(MSet.of(MSet.of(0)));
+        var alphaZeroSq = MSet.mul(alphaZero, alphaZero);
+        var alphaZero3rd = MSet.mul(alphaZeroSq, alphaZero);
+        var alphaZero4th = MSet.mul(alphaZeroSq, alphaZeroSq);
         var alphaZero3rdPlusAlphaZero4th=MSet.add(alphaZero3rd,alphaZero4th);
         printIt("\u03B1\u2080\u00B3", alphaZero3rd);
         printIt("\u03B1\u2080\u2074", alphaZero4th);
@@ -182,9 +184,9 @@ public class MSetTest3 {
         var alphaThree = MSet.of(MSet.of(MSet.of(3)));
         var alphaFour = MSet.of(MSet.of(MSet.of(4)));
         var alphaThreePlusAlphaFour=MSet.add(alphaThree,alphaFour);
-        printItNoAssert("\u03B1\u2083", alphaThree);
-        printItNoAssert("\u03B1\u2084\u2074", alphaFour);
-        printItNoAssert("\u03B1\u2083+\u03B1\u2084", alphaThreePlusAlphaFour);
+        printIt("\u03B1\u2083", alphaThree);
+        printIt("\u03B1\u2084", alphaFour);
+        printIt("\u03B1\u2083+\u03B1\u2084", alphaThreePlusAlphaFour);
         System.out.println("\n\n\n");
     }
 }

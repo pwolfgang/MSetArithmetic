@@ -260,12 +260,7 @@ public class NonEmptyMSet implements MSet {
                 if (count > 1) {
                     stringBuilder.append(count);
                 }
-                if (first.size() == 1) {
-                    stringBuilder.append('\u03B1');
-                    stringBuilder.append(subScripts[first.getHeight()-1]);                    
-                } else {
-                    stringBuilder.append(genSupSub((NonEmptyMSet)first));
-                }
+                stringBuilder.append(genSupSub((NonEmptyMSet)first));
                 stringJoiner.add(stringBuilder);
             }
         });
@@ -277,7 +272,7 @@ public class NonEmptyMSet implements MSet {
         var stb = new StringBuilder();
         ll.forEach(el ->{
             stb.append("\u03B1");
-            stb.append(genSub(el.get(0).getHeight()));
+            stb.append(genSub(el.get(0).size()));
             if (el.size() > 1) {
                 stb.append(genSup(el.size()));
             }
@@ -305,7 +300,9 @@ public class NonEmptyMSet implements MSet {
         return stb.toString();
     }
     
-    
-
+    @Override
+    public List<MSet> getContent() {
+        return new ArrayList<>(content);
+    }    
 
 }
