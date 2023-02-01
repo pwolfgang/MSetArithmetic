@@ -18,6 +18,7 @@
 package com.pwolfgang.msetarithmetic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,23 +38,14 @@ public class NonEmptyMSet implements MSet {
     SortedSet<MSet> content;
     
     NonEmptyMSet(MSet... mSets) {
-        content = new TreeSet<>(MSet::compareTo);
-        int maxHeight = 0;
-        for (MSet mSet : mSets) {
-            MSet newMSet = mSet.clone();
-            newMSet.setParent(this);
-            if (newMSet.getHeight() > maxHeight) {
-                maxHeight = newMSet.getHeight();
-            }          
-            content.add(newMSet);
-        }
-        height = maxHeight+1;
+        this(Arrays.asList(mSets));
     }
     
     NonEmptyMSet(List<MSet> mSets) {
         content = new TreeSet<>(MSet::compareTo);
         int maxHeight = 0;
-        for (MSet mSet : mSets) {
+        for (MSet m : mSets) {
+            var mSet = m.clone();
             mSet.setParent(this);
             if (mSet.getHeight() > maxHeight) {
                 maxHeight = mSet.getHeight();
@@ -65,13 +57,23 @@ public class NonEmptyMSet implements MSet {
     
     NonEmptyMSet(int n) {
         content = new TreeSet<>(MSet::compareTo);
-        for (int i = 0; i < n; i++) {
-            MSet mSet = new EmptyMSet();
-            mSet.setParent(this);
-            content.add(mSet);
+        if (n > 0) {
+            for (int i = 0; i < n; i++) {
+                MSet mSet = new EmptyMSet();
+                mSet.setParent(this);
+                content.add(mSet);
+            }
+        } else if (n < 0) {
+            for (int i = 0; i < -n; i++) {
+                MSet mSet = new AntiEmptySet();
+                mSet.setParent(this);
+                content.add(mSet);
+            }            
+        } else {
+            throw new IllegalArgumentException();
         }
         height=1;
-    }
+    } 
     
     NonEmptyMSet(SortedSet<MSet> c) {
         content = new TreeSet<>(MSet::compareTo);
@@ -121,7 +123,11 @@ public class NonEmptyMSet implements MSet {
         while (itr.hasNext()) {
             var c = itr.next();
             if (c.size() == 0) {
-                countOfEmptySets++;
+                if (c.getClass()==AntiEmptySet.class) {
+                    countOfEmptySets--;
+                } else {
+                    countOfEmptySets++;
+                }
             } else {
                 sj = new StringJoiner(" ", "[", "]");
                 if (countOfEmptySets != 0) {
@@ -254,7 +260,11 @@ public class NonEmptyMSet implements MSet {
             int count = el.size();
             MSet first = el.get(0);
             if (first.getHeight() == 0) {
-                stringJoiner.add(Integer.toString(count));
+                if (first.getClass() == AntiEmptySet.class) {
+                    stringJoiner.add(Integer.toString(-count));
+                } else {
+                    stringJoiner.add(Integer.toString(count));
+                }
             } else {
                 var stringBuilder = new StringBuilder();
                 if (count > 1) {

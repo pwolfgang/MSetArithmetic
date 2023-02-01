@@ -151,7 +151,8 @@ public class MSetTest {
         System.out.println("testMulNat");
         var x = MSet.of(2);
         var y = MSet.of(3);
-        assertEquals("6", MSet.mul(x,y).toIntegerString());
+        var p = MSet.mul(x,y);
+        assertEquals("6", p.toIntegerString());
     }
     
     @Test

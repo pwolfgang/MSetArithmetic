@@ -18,8 +18,11 @@
 package com.pwolfgang.msetarithmetic;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -76,26 +79,80 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
     @Override
     Iterator<MSet> iterator();
     
+    static MSet addOrMulEmptySets(MSet x, MSet y) {
+        boolean xA = x.getClass()==AntiEmptySet.class;
+        boolean yA = y.getClass()==AntiEmptySet.class;
+        if (xA && yA) {
+            return new EmptyMSet();
+        } else if (!xA && !yA) {
+            return new EmptyMSet();
+        } else {
+            return new AntiEmptySet();
+        }
+    }
+    
+    public static MSet add(MSet x, MSet y) {
+        if (x.size() == 0 && y.size() == 0) {
+            return addOrMulEmptySets(x, y);
+        } else {
+            return add(new MSet[]{x, y});
+        }
+    }
+    
     public static MSet add(MSet... mSets) {
         if (mSets.length==0) {
             return new EmptyMSet();
         } else {
-            List<MSet> list = new ArrayList<>();
+            List<MSet> list = new LinkedList<>();
             for (MSet mSet : mSets) {
                 if (mSet.size() > 0) {
                     list.addAll(((NonEmptyMSet)mSet).content);
+                } else {
+                    if (mSet.getClass() == EmptyMSet.class) {
+                        list.add(new EmptyMSet());
+                        list.add(new AntiEmptySet());
+                    } else {
+                        list.add(new AntiEmptySet());
+                    }
                 }
             }
+            anialate(list);
             if (!list.isEmpty()) {
-                var mSetArray = list.toArray(MSet[]::new);
-                return new NonEmptyMSet(mSetArray);
+                return new NonEmptyMSet(list);
             } else {
                 return new EmptyMSet();
             }           
         }
     }
     
+    static void anialate(List<MSet> mSets) {
+        boolean foundPair = true;
+        while (foundPair) {
+            foundPair = false;
+            for (int i = 0; i < mSets.size(); i++) {
+                var mSet1 = mSets.get(i);
+                if (mSet1.getClass()==EmptyMSet.class || mSet1.getClass() == AntiEmptySet.class) {
+                    for (int j = i+1; j < mSets.size(); j++) {
+                        var mSet2 = mSets.get(j);
+                        if ((mSet1.getClass() == EmptyMSet.class && mSet2.getClass() == AntiEmptySet.class)
+                            || (mSet1.getClass()==AntiEmptySet.class && mSet2.getClass()==EmptyMSet.class)) {
+                            mSets.remove(j);
+                            mSets.remove(i);
+                            foundPair = true;
+                            break;
+                        }
+                    }              
+                }
+                if (foundPair) break;
+            }
+        }
+        
+    }
+    
     public static MSet mul(MSet x, MSet y) {
+        if (x.size() == 0 && y.size()==0) {
+            return addOrMulEmptySets(x, y);
+        }
         MSet xC = x.clone();
         MSet yC = y.clone();
         List<MSet> resultList = new ArrayList<>();
@@ -108,7 +165,7 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
                 resultList.add(add(msetX,msetY));
             }
         }
-        return MSet.of(resultList.toArray(new MSet[resultList.size()]));
+        return MSet.of(resultList.toArray(MSet[]::new));
     }
     
     public static MSet mul(MSet... mSets) {
