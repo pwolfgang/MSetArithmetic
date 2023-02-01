@@ -37,6 +37,16 @@ public class NonEmptyMSet implements MSet {
     
     SortedSet<MSet> content;
     
+    @Override
+    public boolean isEmptySet() {
+        return false;
+    }
+    
+    @Override
+    public boolean isAntiEmptySet() {
+        return false;
+    }
+    
     NonEmptyMSet(MSet... mSets) {
         this(Arrays.asList(mSets));
     }
@@ -122,8 +132,8 @@ public class NonEmptyMSet implements MSet {
         StringJoiner sj = null;
         while (itr.hasNext()) {
             var c = itr.next();
-            if (c.size() == 0) {
-                if (c.getClass()==AntiEmptySet.class) {
+            if (c.isEmptySet()) {
+                if (c.isAntiEmptySet()) {
                     countOfEmptySets--;
                 } else {
                     countOfEmptySets++;
@@ -260,7 +270,7 @@ public class NonEmptyMSet implements MSet {
             int count = el.size();
             MSet first = el.get(0);
             if (first.getHeight() == 0) {
-                if (first.getClass() == AntiEmptySet.class) {
+                if (first.isAntiEmptySet()) {
                     stringJoiner.add(Integer.toString(-count));
                 } else {
                     stringJoiner.add(Integer.toString(count));

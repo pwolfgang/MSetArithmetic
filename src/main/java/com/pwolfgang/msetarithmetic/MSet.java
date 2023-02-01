@@ -18,11 +18,9 @@
 package com.pwolfgang.msetarithmetic;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  *
@@ -36,7 +34,11 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
     char[] superScripts = {'\u2070','\u00B9','\u00B2','\u00B3','\u2074',
         '\u2075','\u2076','\u2077','\u2078','\u2079'};
     
-    public int size();
+    int size();
+    
+    boolean isEmptySet();
+    
+    boolean isAntiEmptySet();
     
     @Override
     public String toString();
@@ -80,8 +82,8 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
     Iterator<MSet> iterator();
     
     static MSet addOrMulEmptySets(MSet x, MSet y) {
-        boolean xA = x.getClass()==AntiEmptySet.class;
-        boolean yA = y.getClass()==AntiEmptySet.class;
+        boolean xA = x.isAntiEmptySet();
+        boolean yA = y.isAntiEmptySet();
         if (xA && yA) {
             return new EmptyMSet();
         } else if (!xA && !yA) {
@@ -105,15 +107,15 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
         } else {
             List<MSet> list = new LinkedList<>();
             for (MSet mSet : mSets) {
-                if (mSet.size() > 0) {
-                    list.addAll(((NonEmptyMSet)mSet).content);
-                } else {
-                    if (mSet.getClass() == EmptyMSet.class) {
-                        list.add(new EmptyMSet());
+                if (mSet.isEmptySet()) {
+                    if (mSet.isAntiEmptySet()) {
                         list.add(new AntiEmptySet());
                     } else {
+                        list.add(new EmptyMSet());
                         list.add(new AntiEmptySet());
                     }
+                } else {
+                    list.addAll(((NonEmptyMSet)mSet).content);
                 }
             }
             anialate(list);
@@ -131,17 +133,19 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
             foundPair = false;
             for (int i = 0; i < mSets.size(); i++) {
                 var mSet1 = mSets.get(i);
-                if (mSet1.getClass()==EmptyMSet.class || mSet1.getClass() == AntiEmptySet.class) {
+                if (mSet1.isEmptySet()) {
                     for (int j = i+1; j < mSets.size(); j++) {
                         var mSet2 = mSets.get(j);
-                        if ((mSet1.getClass() == EmptyMSet.class && mSet2.getClass() == AntiEmptySet.class)
-                            || (mSet1.getClass()==AntiEmptySet.class && mSet2.getClass()==EmptyMSet.class)) {
-                            mSets.remove(j);
-                            mSets.remove(i);
-                            foundPair = true;
-                            break;
-                        }
-                    }              
+                        if (mSet2.isEmptySet()) {
+                            if ((mSet1.isAntiEmptySet() && ! mSet2.isAntiEmptySet())
+                                    || (!mSet1.isAntiEmptySet() && mSet2.isAntiEmptySet())) {
+                                mSets.remove(j);
+                                mSets.remove(i);
+                                foundPair = true;
+                                break;
+                            }
+                        }              
+                    }
                 }
                 if (foundPair) break;
             }

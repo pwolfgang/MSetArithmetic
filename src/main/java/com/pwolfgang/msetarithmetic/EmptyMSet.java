@@ -34,6 +34,16 @@ public class EmptyMSet implements MSet {
     public int size() {return 0;}
     
     @Override
+    public boolean isEmptySet() {
+        return true;
+    }
+    
+    @Override
+    public boolean isAntiEmptySet() {
+        return false;
+    }
+    
+    @Override
     public String toString() {
         return "[]";
     }

@@ -34,6 +34,16 @@ public class AntiEmptySet implements MSet {
     public int size() {return 0;}
     
     @Override
+    public boolean isEmptySet() {
+        return true;
+    }
+    
+    @Override
+    public boolean isAntiEmptySet() {
+        return true;
+    }
+    
+    @Override
     public String toString() {
         return "[]\u1D43";
     }
