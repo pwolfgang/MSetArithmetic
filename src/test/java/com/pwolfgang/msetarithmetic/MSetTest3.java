@@ -168,6 +168,7 @@ public class MSetTest3 {
     
     @Test
     public void testAlphaZero4thPlusAlphaZero3rd() {
+        System.out.println("\n\n\n\u03B1\u2080\u00B3+\u03B1\u2080\u2074");
         var alphaZero = MSet.of(MSet.of(MSet.of(0)));
         var alphaZeroSq = MSet.mul(alphaZero, alphaZero);
         var alphaZero3rd = MSet.mul(alphaZeroSq, alphaZero);

@@ -136,4 +136,22 @@ public class AntiEmptySetTest {
         printIt("0", MSet.crt(one, zero));
     }
     
+    @Test
+    public void testMultiTimesZero() {
+        System.out.println("\n\n\nTest of M times 0");
+        MSet a = MSet.of(MSet.of(0),MSet.of(0),MSet.of(2),MSet.of(MSet.of(1)),MSet.of(MSet.of(1)));
+        System.out.println(a.toString());
+        System.out.println(a.toIntegerString());
+        System.out.println(a.asPolyNumber());
+        MSet aPlusAntiZero = MSet.add(a, new AntiEmptySet());
+        System.out.println(aPlusAntiZero.toString());
+        System.out.println(aPlusAntiZero.toIntegerString());
+        System.out.println(aPlusAntiZero.asPolyNumber());
+        MSet aTimesZero = MSet.mul(a,MSet.of(0));
+        System.out.println(aTimesZero.toString());
+        System.out.println(aTimesZero.toIntegerString());
+        System.out.println(aTimesZero.asPolyNumber());
+        assertEquals(new EmptyMSet(), aTimesZero);
+    }
+    
 }

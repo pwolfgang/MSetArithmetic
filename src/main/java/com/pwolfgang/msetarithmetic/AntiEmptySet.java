@@ -63,6 +63,15 @@ public class AntiEmptySet implements MSet {
     }
     
     @Override
+    public MSet makeAnti() {
+        return new EmptyMSet();
+    }
+    
+    public boolean isAnti() {
+        return true;
+    }
+    
+    @Override
     public Iterator<MSet> iterator() {
         return new Iterator<MSet>() {
             @Override
@@ -117,7 +126,8 @@ public class AntiEmptySet implements MSet {
     public boolean equals(Object o) {
         if (o == null) return false;
         if (this == o) return true;
-        return this.getClass() == o.getClass();
+        var oClass = o.getClass();
+        return oClass == EmptyMSet.class || oClass == AntiEmptySet.class;
     }
     
     @Override

@@ -27,24 +27,24 @@ import java.util.List;
  * @author Paul Wolfgang <paul@pwolfgang.com>
  */
 public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
-    
-    char[] subScripts = {'\u2080','\u2081','\u2082','\u2083',
-        '\u2084','\u2085','\u2086','\u2087','\u2088','\u2089'};
-    
-    char[] superScripts = {'\u2070','\u00B9','\u00B2','\u00B3','\u2074',
-        '\u2075','\u2076','\u2077','\u2078','\u2079'};
-    
+
+    char[] subScripts = {'\u2080', '\u2081', '\u2082', '\u2083',
+        '\u2084', '\u2085', '\u2086', '\u2087', '\u2088', '\u2089'};
+
+    char[] superScripts = {'\u2070', '\u00B9', '\u00B2', '\u00B3', '\u2074',
+        '\u2075', '\u2076', '\u2077', '\u2078', '\u2079'};
+
     int size();
-    
+
     boolean isEmptySet();
-    
+
     boolean isAntiEmptySet();
-    
+
     @Override
     public String toString();
-    
+
     public String toIntegerString();
-    
+
     @Override
     default public int compareTo(MSet other) {
         int compareHeight = Integer.compare(this.getHeight(), other.getHeight());
@@ -59,15 +59,15 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
             }
         }
     }
-    
+
     public static MSet of(MSet... mSets) {
-        if (mSets == null || mSets.length==0) {
+        if (mSets == null || mSets.length == 0) {
             return new EmptyMSet();
         } else {
             return new NonEmptyMSet(mSets);
         }
     }
-    
+
     public static MSet of(int n) {
         if (n == 0) {
             return new EmptyMSet();
@@ -75,12 +75,16 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
             return new NonEmptyMSet(n);
         }
     }
-    
+
     MSet clone();
-    
+
+    MSet makeAnti();
+
+    boolean isAnti();
+
     @Override
     Iterator<MSet> iterator();
-    
+
     static MSet addOrMulEmptySets(MSet x, MSet y) {
         boolean xA = x.isAntiEmptySet();
         boolean yA = y.isAntiEmptySet();
@@ -92,17 +96,21 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
             return new AntiEmptySet();
         }
     }
-    
+
     public static MSet add(MSet x, MSet y) {
-        if (x.size() == 0 && y.size() == 0) {
+        if (x.isEmptySet() && y.isEmptySet()) {
             return addOrMulEmptySets(x, y);
+        } else if (x.isAntiEmptySet()) {
+            return y.makeAnti();
+        } else if (y.isAntiEmptySet()) {
+            return x.makeAnti();
         } else {
             return add(new MSet[]{x, y});
         }
     }
-    
+
     public static MSet add(MSet... mSets) {
-        if (mSets.length==0) {
+        if (mSets.length == 0) {
             return new EmptyMSet();
         } else {
             List<MSet> list = new LinkedList<>();
@@ -115,7 +123,7 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
                         list.add(new AntiEmptySet());
                     }
                 } else {
-                    list.addAll(((NonEmptyMSet)mSet).content);
+                    list.addAll(((NonEmptyMSet) mSet).content);
                 }
             }
             anialate(list);
@@ -123,73 +131,80 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
                 return new NonEmptyMSet(list);
             } else {
                 return new EmptyMSet();
-            }           
+            }
         }
     }
-    
+
     static void anialate(List<MSet> mSets) {
         boolean foundPair = true;
         while (foundPair) {
             foundPair = false;
             for (int i = 0; i < mSets.size(); i++) {
                 var mSet1 = mSets.get(i);
-                if (mSet1.isEmptySet()) {
-                    for (int j = i+1; j < mSets.size(); j++) {
-                        var mSet2 = mSets.get(j);
-                        if (mSet2.isEmptySet()) {
-                            if ((mSet1.isAntiEmptySet() && ! mSet2.isAntiEmptySet())
-                                    || (!mSet1.isAntiEmptySet() && mSet2.isAntiEmptySet())) {
-                                mSets.remove(j);
-                                mSets.remove(i);
-                                foundPair = true;
-                                break;
-                            }
-                        }              
+                for (int j = i + 1; j < mSets.size(); j++) {
+                    var mSet2 = mSets.get(j);
+                    if (((mSet1.isAnti() && !mSet2.isAnti())
+                            || (!mSet1.isAnti() && mSet2.isAnti()))
+                            && mSet1.equals(mSet2)) {
+                        mSets.remove(j);
+                        mSets.remove(i);
+                        foundPair = true;
+                        break;
                     }
                 }
-                if (foundPair) break;
+                if (foundPair) {
+                    break;
+                }
             }
         }
-        
     }
-    
-    public static MSet mul(MSet x, MSet y) {
-        if (x.size() == 0 && y.size()==0) {
+
+public static MSet mul(MSet x, MSet y) {
+        if (x.isEmptySet() && y.isEmptySet()) {
             return addOrMulEmptySets(x, y);
         }
-        MSet xC = x.clone();
-        MSet yC = y.clone();
+        MSet xC;
+        if (x.isEmptySet() && !x.isAntiEmptySet()) {
+            xC = MSet.of(new EmptyMSet(), new AntiEmptySet());
+        } else {
+            xC = x.clone();
+        }
+        MSet yC;
+        if (y.isEmptySet() && !y.isAntiEmptySet()) {
+            yC = MSet.of(new EmptyMSet(), new AntiEmptySet());
+        } else {
+            yC = y.clone();
+        }
+
         List<MSet> resultList = new ArrayList<>();
-        var itrX = xC.iterator();
-        while (itrX.hasNext()) {
-            var msetX = itrX.next();
-            var itrY = yC.iterator();
-            while (itrY.hasNext()) {
-                var msetY = itrY.next();
-                resultList.add(add(msetX,msetY));
+        for (var msetX : xC) {
+            for (var msetY : yC) {
+                resultList.add(add(msetX, msetY));
             }
         }
+        anialate(resultList);
         return MSet.of(resultList.toArray(MSet[]::new));
     }
-    
+
     public static MSet mul(MSet... mSets) {
-        if (mSets.length == 0) {
-            return MSet.of(0);
-        } else if (mSets.length == 1) {
-            return mSets[0];
-        } else {
-            var x = mSets[0];
-            var y = mSets[1];
-            var z = MSet.mul(x,y);
-            for (int i = 2; i < mSets.length; i++) {
-                z = MSet.mul(z,mSets[i]);
-            }
-            return z;
+        switch (mSets.length) {
+            case 0:
+                return MSet.of(0);
+            case 1:
+                return mSets[0];
+            default:
+                var x = mSets[0];
+                var y = mSets[1];
+                var z = MSet.mul(x, y);
+                for (int i = 2; i < mSets.length; i++) {
+                    z = MSet.mul(z, mSets[i]);
+                }
+                return z;
         }
     }
-    
+
     public static MSet crt(MSet x, MSet y) {
-        
+
         List<MSet> resultList = new ArrayList<>();
         var itrX = x.iterator();
         while (itrX.hasNext()) {
@@ -197,47 +212,48 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
             var itrY = y.iterator();
             while (itrY.hasNext()) {
                 var msetY = itrY.next();
-                resultList.add(mul(msetX,msetY));
+                resultList.add(mul(msetX, msetY));
             }
         }
-        return MSet.of(resultList.toArray(new MSet[resultList.size()]));
+        anialate(resultList);
+        return MSet.of(resultList.toArray(MSet[]::new));
     }
-    
+
     public static MSet crt(MSet... mSets) {
-        if (mSets.length == 0) {
-            return MSet.of(0);
-        } else if (mSets.length == 1) {
-            return mSets[0];
-        } else {
-            var x = mSets[0];
-            var y = mSets[1];
-            var z = MSet.crt(x,y);
-            for (int i = 2; i < mSets.length; i++) {
-                z = MSet.crt(z,mSets[i]);
-            }
-            return z;
+        switch (mSets.length) {
+            case 0:
+                return MSet.of(0);
+            case 1:
+                return mSets[0];
+            default:
+                var x = mSets[0];
+                var y = mSets[1];
+                var z = MSet.crt(x, y);
+                for (int i = 2; i < mSets.length; i++) {
+                    z = MSet.crt(z, mSets[i]);
+                }
+                return z;
         }
     }
-    
+
     int getHeight();
-    
+
     int getDepth();
-    
+
     void setParent(MSet parent);
-    
+
     String toStringWithHeight();
-    
+
     MSet Z();
-    
+
     MSet N();
-    
+
     MSet P();
-    
+
     MSet M();
-    
+
     String asPolyNumber();
-    
+
     List<MSet> getContent();
-    
-               
+
 }

@@ -34,6 +34,7 @@ public class NonEmptyMSet implements MSet {
     
     int height;
     MSet parent;
+    boolean anti;
     
     SortedSet<MSet> content;
     
@@ -103,7 +104,23 @@ public class NonEmptyMSet implements MSet {
     public NonEmptyMSet clone() {
         List<MSet> contentsList = new ArrayList<>();
         content.forEach(m -> contentsList.add(m.clone()));
-        return new NonEmptyMSet(contentsList);
+        NonEmptyMSet theClone = new NonEmptyMSet(contentsList);
+        theClone.anti = this.anti;
+        return theClone;
+    }
+    
+    @Override
+    public MSet makeAnti() {
+        List<MSet> contentsList = new ArrayList<>();
+        content.forEach(m -> contentsList.add(m.makeAnti()));
+        var result = new NonEmptyMSet(contentsList);
+        result.anti = true;
+        return result;
+    }
+    
+    @Override
+    public boolean isAnti() {
+        return anti;
     }
     
     @Override
@@ -113,7 +130,7 @@ public class NonEmptyMSet implements MSet {
     
     @Override
     public String toString() {
-        var stj = new StringJoiner(" ", "[", "]");
+        var stj = anti ? new StringJoiner(" ", "[", "]\u1D43") : new StringJoiner(" ", "[", "]");
         content.forEach(m -> stj.add(m.toString()));
         return stj.toString();
     }

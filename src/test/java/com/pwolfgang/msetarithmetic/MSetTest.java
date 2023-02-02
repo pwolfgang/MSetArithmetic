@@ -261,12 +261,6 @@ public class MSetTest {
         System.out.printf("a^b: %s%n", MSet.crt(a,b).asPolyNumber());
     }
     
-//    @Test
-//    public void testAlphaSubscritps() {
-//        System.out.println("Test alpha subscript and superscript");
-//        System.out.println("\u03B1\u2081\u00B2");
-//    }
-//    
     @Test
     public void testEquals() {
         System.out.println("Test Equals");
