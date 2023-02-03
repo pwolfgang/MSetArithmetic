@@ -23,7 +23,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
+ * An MSet is a data structure that contains an unordered collection of
+ * objects with duplicates allowed. This specialized MSet can only contain
+ * other MSets.
+ * This is based on N.J. Wildberger Math Foundations lectures beginning with
+ * lecture 227 "Box Arithmetic A multiset approach." 
+ * 
  * @author Paul Wolfgang <paul@pwolfgang.com>
  */
 public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
@@ -34,17 +39,47 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
     char[] superScripts = {'\u2070', '\u00B9', '\u00B2', '\u00B3', '\u2074',
         '\u2075', '\u2076', '\u2077', '\u2078', '\u2079'};
 
+    /**
+     * Return the size of this MSet.
+     * @return the size of this MSet.
+     */
     int size();
 
+    /**
+     * Indicate that this is an empty MSet
+     * @return True for empty MSets
+     */
     boolean isEmptySet();
 
+    /**
+     * Indicate that this is the anti empty MSet
+     * @return True for anti empty MSets
+     */
     boolean isAntiEmptySet();
 
+    /**
+     * Create a String representation of this MSet
+     * @return a String representation of this MSet
+     */
     @Override
     public String toString();
 
+    /**
+     * Create an integer representation of this MSet. The empty MSet is zero.
+     * An MSet that contains only empty MSets represents the integer which is
+     * the count of the empty MSets. Note that anti empty MSets represent 
+     * negative integers.
+     * @return An integer representation of this MSet.
+     */
     public String toIntegerString();
 
+    /**
+     * Compare this MSet to another MSet. MSEts are ordered first by height and
+     * next by size. To distinguish possible duplicates the hashCode is used.
+     * Two MSets are never considered equal by this method.
+     * @param other The other MSet
+     * @return -1 if this MSet is less than other and +1 if greater.
+     */
     @Override
     default public int compareTo(MSet other) {
         int compareHeight = Integer.compare(this.getHeight(), other.getHeight());
@@ -60,6 +95,11 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
         }
     }
 
+    /**
+     * Copnstruct an MSet from a list of MSets
+     * @param mSets The list of MSets
+     * @return The resulting MSet
+     */
     public static MSet of(MSet... mSets) {
         if (mSets == null || mSets.length == 0) {
             return new EmptyMSet();
@@ -68,6 +108,13 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
         }
     }
 
+    /**
+     * Construct an MSet that represents an integer. The integer n is 
+     * represented by an MSet containing n empty MSets. If n is negative
+     * the resulting MSet contains n anti empty MSets. 
+     * @param n
+     * @return 
+     */
     public static MSet of(int n) {
         if (n == 0) {
             return new EmptyMSet();
@@ -76,15 +123,39 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
         }
     }
 
+   /**
+    * Make a deep copy of this MSet.
+    * @return A deep copy of this MSet.
+    */
     MSet clone();
 
+    /**
+     * Make an equivalent anti version of this MSet. This is a deep copy
+     * with each item converted to an anti copy.
+     * @return Sn anti copy of this MSet
+     */
     MSet makeAnti();
 
+    /**
+     * Indicate that this is and anti MSet
+     * @return true if an anti MSet
+     */
     boolean isAnti();
 
+    /**
+     * Create an Iterator over the contents of this MSet
+     * @return an Iterator over the contents of this MSet
+     */
     @Override
     Iterator<MSet> iterator();
 
+    /**
+     * Return the sum or product of two empty MSets. Note that the sum or 
+     * product of two empty MSets is the same.
+     * @param x One empty MSet
+     * @param y the other empty MSet
+     * @return x + y or x × y
+     */
     static MSet addOrMulEmptySets(MSet x, MSet y) {
         boolean xA = x.isAntiEmptySet();
         boolean yA = y.isAntiEmptySet();
@@ -97,6 +168,17 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
         }
     }
 
+    /**
+     * Return the sum of two MSets. If both MSets are empty, then return
+     * the result of addOrMultEmptySets. If one of the MSets is the 
+     * anti empty MSet, then return the anti of the other MSet. Otherwise
+     * the result sum of two MSets is an MSet that contains the contents
+     * of the two MSets. After the combination of the two MSets any
+     * pairs of object and anti-object are removed.
+     * @param x one MSet
+     * @param y the other MSet
+     * @return x + y
+     */
     public static MSet add(MSet x, MSet y) {
         if (x.isEmptySet() && y.isEmptySet()) {
             return addOrMulEmptySets(x, y);
@@ -109,6 +191,15 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
         }
     }
 
+    /**
+     * Compute the sum of a list of MSets. The result is the combination
+     * of the contents of the input MSets. If one of the input MSets is
+     * the empty MSet it is replaced by a pair of an empty MSet and an anti
+     * empty MSet. After the combination of the two MSets any
+     * pairs of object and anti-object are removed.
+     * @param mSets An array of MSets.
+     * @return The sum of the MSets.
+     */
     public static MSet add(MSet... mSets) {
         if (mSets.length == 0) {
             return new EmptyMSet();
@@ -126,7 +217,7 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
                     list.addAll(((NonEmptyMSet) mSet).content);
                 }
             }
-            anialate(list);
+            annihilate(list);
             if (!list.isEmpty()) {
                 return new NonEmptyMSet(list);
             } else {
@@ -135,7 +226,11 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
         }
     }
 
-    static void anialate(List<MSet> mSets) {
+    /**
+     * Remove any pairs of equal MSet - anti MSet. 
+     * @param mSets A list of MSets.
+     */
+    static void annihilate(List<MSet> mSets) {
         boolean foundPair = true;
         while (foundPair) {
             foundPair = false;
@@ -159,7 +254,14 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
         }
     }
 
-public static MSet mul(MSet x, MSet y) {
+    /**
+     * Compute the product of two MSets. The product is formed by adding
+     * all possible pairs from the two MSets.
+     * @param x An MSet
+     * @param y The other MSet
+     * @return x × y
+     */
+    public static MSet mul(MSet x, MSet y) {
         if (x.isEmptySet() && y.isEmptySet()) {
             return addOrMulEmptySets(x, y);
         }
@@ -182,17 +284,26 @@ public static MSet mul(MSet x, MSet y) {
                 resultList.add(add(msetX, msetY));
             }
         }
-        anialate(resultList);
+        annihilate(resultList);
         return MSet.of(resultList.toArray(MSet[]::new));
     }
 
+    /**
+     * Compute the product of a list of MSets. The product is formed
+     * by taking the first two and forming their product. Each subsequent
+     * MSet is then multiplied by the result.
+     * @param mSets A list of MSets
+     * @return The product of the MSets.
+     */
     public static MSet mul(MSet... mSets) {
         switch (mSets.length) {
-            case 0:
+            case 0 -> {
                 return MSet.of(0);
-            case 1:
+            }
+            case 1 -> {
                 return mSets[0];
-            default:
+            }
+            default -> {
                 var x = mSets[0];
                 var y = mSets[1];
                 var z = MSet.mul(x, y);
@@ -200,32 +311,42 @@ public static MSet mul(MSet x, MSet y) {
                     z = MSet.mul(z, mSets[i]);
                 }
                 return z;
+            }
         }
     }
 
+    /**
+     * Form the caret of two MSets. The result of the caret operator is the
+     * sum of the products of all pairs.
+     * @param x One MSet.
+     * @param y The other MSet.
+     * @return x ^ y
+     */
     public static MSet crt(MSet x, MSet y) {
-
         List<MSet> resultList = new ArrayList<>();
-        var itrX = x.iterator();
-        while (itrX.hasNext()) {
-            var msetX = itrX.next();
-            var itrY = y.iterator();
-            while (itrY.hasNext()) {
-                var msetY = itrY.next();
+        for (var msetX : x) {
+            for (var msetY : y) {
                 resultList.add(mul(msetX, msetY));
             }
         }
-        anialate(resultList);
+        annihilate(resultList);
         return MSet.of(resultList.toArray(MSet[]::new));
     }
 
+    /**
+     * Compute the caret operator on a list os MSets.
+     * @param mSets The MSets
+     * @return The caret operator applied to the list.
+     */
     public static MSet crt(MSet... mSets) {
         switch (mSets.length) {
-            case 0:
+            case 0 -> {
                 return MSet.of(0);
-            case 1:
+            }
+            case 1 -> {
                 return mSets[0];
-            default:
+            }
+            default -> {
                 var x = mSets[0];
                 var y = mSets[1];
                 var z = MSet.crt(x, y);
@@ -233,27 +354,68 @@ public static MSet mul(MSet x, MSet y) {
                     z = MSet.crt(z, mSets[i]);
                 }
                 return z;
+            }
         }
     }
 
+    /**
+     * The height of this MSet within the MSet tree
+     * @return The height of this MSet.
+     */
     int getHeight();
 
+    /**
+     * The depth of this MSet within the MSet tree
+     * @return the depth of this MSet.
+     */
     int getDepth();
 
+    /**
+     * Set the parent of this MSet
+     * @param parent The parent of the MSet
+     */
     void setParent(MSet parent);
 
+    /**
+     * Append the height of this tree to the string representation
+     * @return A string representation of this MSet with its height appended.
+     */
     String toStringWithHeight();
 
+    /**
+     * Count of the zero level of the MSet tree.
+     * @return zero (The empty MSet).
+     */
     MSet Z();
 
+    /**
+     * The number of children of the root.
+     * @return An MSet containing Z applied to the contents. 
+     */
     MSet N();
 
+    /**
+     * The polynumber truncation of the MSet tree
+     * @return An MSet containing N applied to the contents.
+     */
     MSet P();
 
+    /**
+     * The multiset truncation of the MSet tree
+     * @return An MSet containing P applied to the contents.
+     */
     MSet M();
 
+    /**
+     * Create a polynumber representation of the MSet.
+     * @return A Polynumber representation of the MSet.
+     */
     String asPolyNumber();
 
+    /**
+     * The contents of this MSet
+     * @return The contents of the MSet as a List
+     */
     List<MSet> getContent();
 
 }
