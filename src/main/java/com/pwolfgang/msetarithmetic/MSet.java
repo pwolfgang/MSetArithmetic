@@ -17,9 +17,7 @@
  */
 package com.pwolfgang.msetarithmetic;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -148,25 +146,10 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
      */
     @Override
     Iterator<MSet> iterator();
-
-    /**
-     * Return the sum or product of two empty MSets. Note that the sum or 
-     * product of two empty MSets is the same.
-     * @param x One empty MSet
-     * @param y the other empty MSet
-     * @return x + y or x × y
-     */
-    static MSet addOrMulEmptySets(MSet x, MSet y) {
-        boolean xA = x.isAntiEmptySet();
-        boolean yA = y.isAntiEmptySet();
-        if (xA && yA) {
-            return new EmptyMSet();
-        } else if (!xA && !yA) {
-            return new EmptyMSet();
-        } else {
-            return new AntiEmptySet();
-        }
-    }
+    
+    MSet add(MSet other);
+    MSet mul(MSet other);
+    MSet crt(MSet other);
 
     /**
      * Return the sum of two MSets. If both MSets are empty, then return
@@ -180,15 +163,7 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
      * @return x + y
      */
     public static MSet add(MSet x, MSet y) {
-        if (x.isEmptySet() && y.isEmptySet()) {
-            return addOrMulEmptySets(x, y);
-        } else if (x.isAntiEmptySet()) {
-            return y.makeAnti();
-        } else if (y.isAntiEmptySet()) {
-            return x.makeAnti();
-        } else {
-            return add(new MSet[]{x, y});
-        }
+        return x.add(y);
     }
 
     /**
@@ -201,27 +176,21 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
      * @return The sum of the MSets.
      */
     public static MSet add(MSet... mSets) {
-        if (mSets.length == 0) {
-            return new EmptyMSet();
-        } else {
-            List<MSet> list = new LinkedList<>();
-            for (MSet mSet : mSets) {
-                if (mSet.isEmptySet()) {
-                    if (mSet.isAntiEmptySet()) {
-                        list.add(new AntiEmptySet());
-                    } else {
-                        list.add(new EmptyMSet());
-                        list.add(new AntiEmptySet());
-                    }
-                } else {
-                    list.addAll(((NonEmptyMSet) mSet).content);
-                }
-            }
-            annihilate(list);
-            if (!list.isEmpty()) {
-                return new NonEmptyMSet(list);
-            } else {
+        switch (mSets.length) {
+            case 0 -> {
                 return new EmptyMSet();
+            }
+            case 1 -> {
+                return mSets[0];
+            }
+            default -> {
+                var x = mSets[0];
+                var y = mSets[1];
+                var z = x.add(y);
+                for (int i = 2; i < mSets.length; i++) {
+                    z = z.add(mSets[i]);
+                }
+                return z;               
             }
         }
     }
@@ -262,30 +231,7 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
      * @return x × y
      */
     public static MSet mul(MSet x, MSet y) {
-        if (x.isEmptySet() && y.isEmptySet()) {
-            return addOrMulEmptySets(x, y);
-        }
-        MSet xC;
-        if (x.isEmptySet() && !x.isAntiEmptySet()) {
-            xC = MSet.of(new EmptyMSet(), new AntiEmptySet());
-        } else {
-            xC = x.clone();
-        }
-        MSet yC;
-        if (y.isEmptySet() && !y.isAntiEmptySet()) {
-            yC = MSet.of(new EmptyMSet(), new AntiEmptySet());
-        } else {
-            yC = y.clone();
-        }
-
-        List<MSet> resultList = new ArrayList<>();
-        for (var msetX : xC) {
-            for (var msetY : yC) {
-                resultList.add(add(msetX, msetY));
-            }
-        }
-        annihilate(resultList);
-        return MSet.of(resultList.toArray(MSet[]::new));
+        return x.mul(y);
     }
 
     /**
@@ -306,9 +252,9 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
             default -> {
                 var x = mSets[0];
                 var y = mSets[1];
-                var z = MSet.mul(x, y);
+                var z = x.mul(y);
                 for (int i = 2; i < mSets.length; i++) {
-                    z = MSet.mul(z, mSets[i]);
+                    z = z.mul(mSets[i]);
                 }
                 return z;
             }
@@ -323,14 +269,7 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
      * @return x ^ y
      */
     public static MSet crt(MSet x, MSet y) {
-        List<MSet> resultList = new ArrayList<>();
-        for (var msetX : x) {
-            for (var msetY : y) {
-                resultList.add(mul(msetX, msetY));
-            }
-        }
-        annihilate(resultList);
-        return MSet.of(resultList.toArray(MSet[]::new));
+        return x.crt(y);
     }
 
     /**
@@ -349,9 +288,9 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
             default -> {
                 var x = mSets[0];
                 var y = mSets[1];
-                var z = MSet.crt(x, y);
+                var z = x.crt(y);
                 for (int i = 2; i < mSets.length; i++) {
-                    z = MSet.crt(z, mSets[i]);
+                    z = z.crt(mSets[i]);
                 }
                 return z;
             }

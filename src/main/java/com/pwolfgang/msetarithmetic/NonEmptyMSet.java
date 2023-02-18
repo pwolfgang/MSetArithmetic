@@ -183,6 +183,97 @@ public class NonEmptyMSet implements MSet {
     public Iterator<MSet> iterator() {
         return content.iterator();
     }
+
+    /**
+     * Remove any pairs of equal MSet - anti MSet. 
+     * @param mSets A list of MSets.
+     */
+    static void annihilate(List<MSet> mSets) {
+        boolean foundPair = true;
+        while (foundPair) {
+            foundPair = false;
+            for (int i = 0; i < mSets.size(); i++) {
+                var mSet1 = mSets.get(i);
+                for (int j = i + 1; j < mSets.size(); j++) {
+                    var mSet2 = mSets.get(j);
+                    if (((mSet1.isAnti() && !mSet2.isAnti())
+                            || (!mSet1.isAnti() && mSet2.isAnti()))
+                            && mSet1.equals(mSet2)) {
+                        mSets.remove(j);
+                        mSets.remove(i);
+                        foundPair = true;
+                        break;
+                    }
+                }
+                if (foundPair) {
+                    break;
+                }
+            }
+        }
+    }
+    
+    @Override
+    public MSet add(MSet other) {
+        if (other.isAntiEmptySet()) {
+            return other.add(this);
+        }
+        if (other.isEmptySet()) {
+            return other.add(this);
+        }
+        List<MSet> list = new LinkedList<>();
+        list.addAll(this.content);
+        list.addAll(other.getContent());
+        annihilate(list);
+        if (!list.isEmpty()) {
+            return new NonEmptyMSet(list);
+        } else {
+            return new EmptyMSet();
+        }
+    }
+    
+    @Override
+    public MSet mul(MSet other) {
+        if (other.isAntiEmptySet()) {
+            return other.mul(this);
+        }
+        if (other.isEmptySet()) {
+            return other.mul(this);
+        }
+        List<MSet> resultList = new ArrayList<>();
+        for (var msetX : this) {
+            for (var msetY : other) {
+                resultList.add(msetX.add(msetY));
+            }
+        }
+        annihilate(resultList);
+        if (!resultList.isEmpty()) {
+            return new NonEmptyMSet(resultList);
+        } else {
+            return new EmptyMSet();
+        }
+        
+    }
+    
+    public MSet crt(MSet other) {
+        if (other.isAntiEmptySet()) {
+            return other.crt(this);
+        }
+        if (other.isAntiEmptySet()) {
+            return other.crt(this);
+        }
+        List<MSet> resultList = new ArrayList<>();
+        for (var msetX : this) {
+            for (var msetY : other) {
+                resultList.add(msetX.mul(msetY));
+            }
+        }
+        annihilate(resultList);
+        if (!resultList.isEmpty()) {
+            return new NonEmptyMSet(resultList);
+        } else {
+            return new EmptyMSet();
+        }        
+    }
     
     @Override
     public int getHeight() {

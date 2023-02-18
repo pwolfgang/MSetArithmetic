@@ -86,6 +86,23 @@ public class AntiEmptySet implements MSet {
     }
     
     @Override
+    public MSet add(MSet other) {
+        return other.makeAnti();
+    }
+    
+    @Override
+    public MSet mul(MSet other) {
+        if (other.isAntiEmptySet()) {
+            return new EmptyMSet();
+        }
+        return new AntiEmptySet();
+    }
+    
+    public MSet crt(MSet other) {
+        return new AntiEmptySet();
+    }
+    
+    @Override
     public int getHeight() {
         return 0;
     }

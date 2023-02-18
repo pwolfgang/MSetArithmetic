@@ -87,6 +87,35 @@ public class EmptyMSet implements MSet {
     }
     
     @Override
+    public MSet add(MSet other) {
+        return other.clone();
+    }
+    
+    @Override
+    public MSet mul(MSet other) {
+        if (other.isAntiEmptySet()) {
+            return new AntiEmptySet();
+        }
+        if (other.isEmptySet()) {
+            return new EmptyMSet();
+        }
+        var x = MSet.of(new EmptyMSet(), new AntiEmptySet());
+        return x.mul(other);
+    }
+    
+    @Override
+    public MSet crt(MSet other) {
+        if (other.isAntiEmptySet()) {
+            return new AntiEmptySet();
+        }
+        if (other.isEmptySet()) {
+            return new EmptyMSet();
+        }
+        var x = MSet.of(new EmptyMSet(), new AntiEmptySet());
+        return x.crt(other);
+    }
+    
+    @Override
     public int getHeight() {
         return 0;
     }
