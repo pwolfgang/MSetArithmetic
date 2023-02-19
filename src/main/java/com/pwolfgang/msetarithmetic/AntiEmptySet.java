@@ -87,18 +87,62 @@ public class AntiEmptySet implements MSet {
     
     @Override
     public MSet add(MSet other) {
+        return other.addAntiEmptySet(this);
+    }
+    
+    @Override
+    public MSet addEmptyMSet(EmptyMSet other) {
+        return new AntiEmptySet();
+    }
+    
+    @Override
+    public MSet addAntiEmptySet(AntiEmptySet other) {
+        return new EmptyMSet();
+    }
+    
+    @Override
+    public MSet addNonEmptyMSet(NonEmptyMSet other) {
         return other.makeAnti();
     }
     
     @Override
     public MSet mul(MSet other) {
-        if (other.isAntiEmptySet()) {
-            return new EmptyMSet();
-        }
+        return other.mulAntiEmptySet(this);
+    }
+    
+    @Override
+    public MSet mulEmptyMSet(EmptyMSet other) {
         return new AntiEmptySet();
     }
     
+    @Override
+    public MSet mulAntiEmptySet(AntiEmptySet other) {
+        return new EmptyMSet();
+    }
+    
+    @Override
+    public MSet mulNonEmptyMSet(NonEmptyMSet other) {
+        return new AntiEmptySet();
+    }
+    
+    
+    @Override
     public MSet crt(MSet other) {
+        return other.crtAntiEmptySet(this);
+    }
+    
+    @Override
+    public MSet crtEmptyMSet(EmptyMSet other) {
+        return new AntiEmptySet();
+    }
+
+    @Override
+    public MSet crtAntiEmptySet(AntiEmptySet other) {
+        return new AntiEmptySet();
+    }
+    
+    @Override
+    public MSet crtNonEmptyMSet(NonEmptyMSet other) {
         return new AntiEmptySet();
     }
     

@@ -212,14 +212,24 @@ public class NonEmptyMSet implements MSet {
         }
     }
     
+    
     @Override
     public MSet add(MSet other) {
-        if (other.isAntiEmptySet()) {
-            return other.add(this);
-        }
-        if (other.isEmptySet()) {
-            return other.add(this);
-        }
+        return other.addNonEmptyMSet(this);
+    }
+    
+    @Override
+    public MSet addEmptyMSet(EmptyMSet other) {
+        return this.clone();
+    }
+    
+    @Override
+    public MSet addAntiEmptySet(AntiEmptySet other) {
+        return this.makeAnti();
+    }
+    
+    @Override
+    public MSet addNonEmptyMSet(NonEmptyMSet other) {
         List<MSet> list = new LinkedList<>();
         list.addAll(this.content);
         list.addAll(other.getContent());
@@ -233,12 +243,21 @@ public class NonEmptyMSet implements MSet {
     
     @Override
     public MSet mul(MSet other) {
-        if (other.isAntiEmptySet()) {
-            return other.mul(this);
-        }
-        if (other.isEmptySet()) {
-            return other.mul(this);
-        }
+        return other.mulNonEmptyMSet(this);
+    }
+    
+    @Override
+    public MSet mulEmptyMSet(EmptyMSet other) {
+        return new EmptyMSet();
+    }
+    
+    @Override
+    public MSet mulAntiEmptySet(AntiEmptySet other) {
+        return new AntiEmptySet();
+    }
+    
+    @Override
+    public MSet mulNonEmptyMSet(NonEmptyMSet other) {
         List<MSet> resultList = new ArrayList<>();
         for (var msetX : this) {
             for (var msetY : other) {
@@ -254,13 +273,23 @@ public class NonEmptyMSet implements MSet {
         
     }
     
+    @Override
     public MSet crt(MSet other) {
-        if (other.isAntiEmptySet()) {
-            return other.crt(this);
-        }
-        if (other.isAntiEmptySet()) {
-            return other.crt(this);
-        }
+        return other.crtNonEmptyMSet(this);
+    }
+    
+    @Override
+    public MSet crtEmptyMSet(EmptyMSet other) {
+        return new EmptyMSet();
+    }
+    
+    @Override
+    public MSet crtAntiEmptySet(AntiEmptySet other) {
+        return new AntiEmptySet();
+    }
+    
+    @Override
+    public MSet crtNonEmptyMSet(NonEmptyMSet other) {
         List<MSet> resultList = new ArrayList<>();
         for (var msetX : this) {
             for (var msetY : other) {

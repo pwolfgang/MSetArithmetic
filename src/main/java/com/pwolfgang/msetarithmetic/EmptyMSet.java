@@ -88,31 +88,64 @@ public class EmptyMSet implements MSet {
     
     @Override
     public MSet add(MSet other) {
+        return other.addEmptyMSet(this);
+    }
+    
+    @Override
+    public MSet addEmptyMSet(EmptyMSet other) {
+        return new EmptyMSet();
+    }
+    
+    @Override
+    public MSet addAntiEmptySet(AntiEmptySet other) {
+        return new AntiEmptySet();
+    }
+    
+    @Override
+    public MSet addNonEmptyMSet(NonEmptyMSet other) {
         return other.clone();
     }
     
     @Override
     public MSet mul(MSet other) {
-        if (other.isAntiEmptySet()) {
-            return new AntiEmptySet();
-        }
-        if (other.isEmptySet()) {
-            return new EmptyMSet();
-        }
+        return other.mulEmptyMSet(this);
+    }
+    
+    @Override
+    public MSet mulAntiEmptySet(AntiEmptySet other) {
+        return new AntiEmptySet();
+    }
+    
+    @Override
+    public MSet mulEmptyMSet(EmptyMSet other) {
+        return new EmptyMSet();
+    }
+    
+    @Override
+    public MSet mulNonEmptyMSet(NonEmptyMSet other) {
         var x = MSet.of(new EmptyMSet(), new AntiEmptySet());
-        return x.mul(other);
+        return other.mul(x);
     }
     
     @Override
     public MSet crt(MSet other) {
-        if (other.isAntiEmptySet()) {
-            return new AntiEmptySet();
-        }
-        if (other.isEmptySet()) {
-            return new EmptyMSet();
-        }
+        return other.crtEmptyMSet(this);
+    }
+    
+    @Override
+    public MSet crtAntiEmptySet(AntiEmptySet other) {
+        return other.crt(this);
+    }
+    
+    @Override
+    public MSet crtEmptyMSet(EmptyMSet other) {
+        return other.crt(this);
+    }
+    
+    @Override
+    public MSet crtNonEmptyMSet(NonEmptyMSet other) {
         var x = MSet.of(new EmptyMSet(), new AntiEmptySet());
-        return x.crt(other);
+        return other.crt(x);
     }
     
     @Override

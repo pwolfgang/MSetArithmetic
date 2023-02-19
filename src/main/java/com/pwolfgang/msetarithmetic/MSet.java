@@ -148,8 +148,17 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
     Iterator<MSet> iterator();
     
     MSet add(MSet other);
+    MSet addEmptyMSet(EmptyMSet other);
+    MSet addAntiEmptySet(AntiEmptySet other);
+    MSet addNonEmptyMSet(NonEmptyMSet other);
     MSet mul(MSet other);
+    MSet mulEmptyMSet(EmptyMSet other);
+    MSet mulAntiEmptySet(AntiEmptySet other);
+    MSet mulNonEmptyMSet(NonEmptyMSet other);
     MSet crt(MSet other);
+    MSet crtEmptyMSet(EmptyMSet other);
+    MSet crtAntiEmptySet(AntiEmptySet other);
+    MSet crtNonEmptyMSet(NonEmptyMSet other);
 
     /**
      * Return the sum of two MSets. If both MSets are empty, then return
