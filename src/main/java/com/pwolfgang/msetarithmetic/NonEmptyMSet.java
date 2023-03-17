@@ -139,7 +139,7 @@ public class NonEmptyMSet implements MSet {
         content.forEach(m -> stj.add(m.toStringWithHeight()));
         return String.format("%s%d",stj.toString(),height);
     }
-
+        
     @Override
     public String toIntegerString() {
         int countOfEmptySets = 0;
@@ -452,12 +452,31 @@ public class NonEmptyMSet implements MSet {
         ll.forEach(el ->{
             stb.append("\u03B1");
             stb.append(genSub(el.get(0).size()));
-            if (el.size() > 1) {
-                stb.append(genSup(el.size()));
+            var count = countSets(el);
+            if (count < 0) {
+                stb.append("\u207B");
+                stb.append(genSup(-count));
+            } else if (count > 1) {
+                stb.append(genSup(count));
             }
         });
         return stb.toString();      
     }
+    
+    int countSets(List<MSet> el) {
+        int count = 0;
+        var itr = el.iterator();
+        while (itr.hasNext()) {
+            var c = itr.next();
+            if (c.isAnti()) {
+                count--;
+            } else {
+                    count++;
+            }
+        }
+        return count;
+    }
+
     
     String genSub(int n) {
         var stb = new StringBuilder();
