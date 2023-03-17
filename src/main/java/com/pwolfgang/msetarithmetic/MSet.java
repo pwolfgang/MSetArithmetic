@@ -129,8 +129,9 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
 
     /**
      * Make an equivalent anti version of this MSet. This is a deep copy
-     * with each item converted to an anti copy.
-     * @return Sn anti copy of this MSet
+     * with the anti flag set on the copy. When applied to an anti MSet, the
+     * result is to make a copy with the anti flag cleared.
+     * @return an anti copy of this MSet
      */
     MSet makeAnti();
 

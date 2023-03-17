@@ -111,10 +111,8 @@ public class NonEmptyMSet implements MSet {
     
     @Override
     public MSet makeAnti() {
-        List<MSet> contentsList = new ArrayList<>();
-        content.forEach(m -> contentsList.add(m.makeAnti()));
-        var result = new NonEmptyMSet(contentsList);
-        result.anti = true;
+        var result = clone();
+        result.anti = !anti;
         return result;
     }
     
@@ -158,8 +156,14 @@ public class NonEmptyMSet implements MSet {
             } else {
                 sj = new StringJoiner(" ", "[", "]");
                 if (countOfEmptySets != 0) {
-                    for (int i = 0; i < countOfEmptySets; i++) {
-                        sj.add("0");
+                    if (countOfEmptySets < 0) {
+                        for (int i = 0; i < -countOfEmptySets; i++) {
+                            sj.add("0\u1D43");
+                        }
+                    } else {
+                        for (int i = 0; i < countOfEmptySets; i++) {
+                            sj.add("0");
+                        }
                     }
                 }
                 sj.add(c.toIntegerString());
@@ -167,7 +171,12 @@ public class NonEmptyMSet implements MSet {
             }      
         }
         if (sj == null) {
-            return Integer.toString(countOfEmptySets);
+            var n = Integer.toString(countOfEmptySets);
+            if (isAnti()) {
+                return n + "\u1D43";
+            } else {
+                return Integer.toString(countOfEmptySets);
+            }
         } else {
             return sj.toString();
         }
@@ -234,10 +243,17 @@ public class NonEmptyMSet implements MSet {
         list.addAll(this.content);
         list.addAll(other.getContent());
         annihilate(list);
+        boolean resultIsAnti = (this.anti || other.isAnti()) && !(this.anti && other.isAnti());
+        MSet result;
         if (!list.isEmpty()) {
-            return new NonEmptyMSet(list);
+            result = new NonEmptyMSet(list);
         } else {
-            return new EmptyMSet();
+            result = new EmptyMSet();
+        }
+        if (resultIsAnti) {
+            return result.makeAnti();
+        } else {
+            return result;
         }
     }
     
@@ -400,28 +416,34 @@ public class NonEmptyMSet implements MSet {
         return strJoiner.toString();
     }
     
+    @Override
     public String asPolyNumber() {
         List<List<MSet>> list = groupEquals();
         var stringJoiner = new StringJoiner("+");
         list.forEach(el ->{
             int count = el.size();
             MSet first = el.get(0);
+            var stringBuilder = new StringBuilder();
             if (first.getHeight() == 0) {
-                if (first.isAntiEmptySet()) {
-                    stringJoiner.add(Integer.toString(-count));
+                if (first.isAnti()) {
+                    stringBuilder.append(Integer.toString(-count));
                 } else {
-                    stringJoiner.add(Integer.toString(count));
+                    stringBuilder.append(Integer.toString(count));
                 }
             } else {
-                var stringBuilder = new StringBuilder();
-                if (count > 1) {
-                    stringBuilder.append(count);
+                if (first.isAnti()) {
+                    stringBuilder.append(Integer.toString(-count));
+                } else {
+                    if (count > 1) {
+                        stringBuilder.append(Integer.toString(count));
+                    }
                 }
                 stringBuilder.append(genSupSub((NonEmptyMSet)first));
-                stringJoiner.add(stringBuilder);
             }
+            stringJoiner.add(stringBuilder);
         });
-        return stringJoiner.toString();
+        var result = stringJoiner.toString();
+        return isAnti() ? result + "\u1D43" : result;
     }
     
     String genSupSub(NonEmptyMSet m) {
