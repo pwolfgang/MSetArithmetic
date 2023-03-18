@@ -70,6 +70,34 @@ public class NegativeExponentsTest {
         printIt_noAssert("p", p);
     }
     
-
+    @Test
+    public void testAddWithAnti() {
+        var minusThree = MSet.of(-3);
+        var minusOne = MSet.of(-1);
+        var twoAnti = MSet.of(2).makeAnti();
+        var minusOneAnti = minusOne.makeAnti();
+        var zero = MSet.of(0);
+        var two = MSet.of(2);
+        var three = MSet.of(3);
+        var lhs = MSet.of(minusThree, minusOne, twoAnti);
+        var rhs = MSet.of(minusOneAnti, zero, two, three);
+        printIt_noAssert("lhs", lhs);
+        printIt_noAssert("rhs", rhs);
+        printIt_noAssert("sum", MSet.add(lhs,rhs));
+    }
     
+    @Test
+    public void testMulWithAnti() {
+        var minusTwo = MSet.of(-2);
+        var one = MSet.of(1);
+        var minusOne = MSet.of(-1);
+        var threeAnti = MSet.of(3).makeAnti();
+        var lhs = MSet.of(minusTwo, one);
+        var rhs = MSet.of(minusOne, minusOne, threeAnti);
+        printIt_noAssert("lhs", lhs);
+        printIt_noAssert("rhs", rhs);
+        printIt_noAssert("prod", MSet.mul(lhs, rhs));
+        
+    }
+        
 }

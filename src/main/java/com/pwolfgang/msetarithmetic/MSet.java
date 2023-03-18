@@ -92,6 +92,8 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
             }
         }
     }
+    
+    public boolean equalsNoAnti(Object o);
 
     /**
      * Copnstruct an MSet from a list of MSets

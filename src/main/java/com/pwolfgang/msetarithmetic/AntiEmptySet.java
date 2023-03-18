@@ -184,13 +184,20 @@ public class AntiEmptySet implements MSet {
     }
     
     @Override
-    public boolean equals(Object o) {
+    public boolean equalsNoAnti(Object o) {
         if (o == null) return false;
         if (this == o) return true;
         var oClass = o.getClass();
         return oClass == EmptyMSet.class || oClass == AntiEmptySet.class;
     }
     
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (this == o) return true;
+        return (this.getClass() == o.getClass());
+    }
+
     @Override
     public String asPolyNumber() {
         return "0\u1D43";

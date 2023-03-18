@@ -207,7 +207,7 @@ public class NonEmptyMSet implements MSet {
                     var mSet2 = mSets.get(j);
                     if (((mSet1.isAnti() && !mSet2.isAnti())
                             || (!mSet1.isAnti() && mSet2.isAnti()))
-                            && mSet1.equals(mSet2)) {
+                            && mSet1.equalsNoAnti(mSet2)) {
                         mSets.remove(j);
                         mSets.remove(i);
                         foundPair = true;
@@ -366,11 +366,35 @@ public class NonEmptyMSet implements MSet {
     }
     
     @Override
+    public boolean equalsNoAnti(Object o) {
+        if (o == null) return false;
+        if (this == o) return true;
+        if (this.getClass() == o.getClass()) {
+            NonEmptyMSet other = (NonEmptyMSet)o;
+            var thisContent = this.content;
+            var otherContent = other.content;
+            var itr1 = thisContent.iterator();
+            var itr2 = otherContent.iterator();
+            while (itr1.hasNext() && itr2.hasNext()) {
+                var x = itr1.next();
+                var y = itr2.next();
+                if (!x.equals(y)) return false;
+            }
+            return (!itr1.hasNext() && !itr2.hasNext());
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o == null) return false;
         if (this == o) return true;
         if (this.getClass() == o.getClass()) {
             NonEmptyMSet other = (NonEmptyMSet)o;
+            if (this.anti != other.anti) {
+                return false;
+            }
             var thisContent = this.content;
             var otherContent = other.content;
             var itr1 = thisContent.iterator();
