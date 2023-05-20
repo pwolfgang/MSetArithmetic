@@ -17,6 +17,7 @@
  */
 package com.pwolfgang.msetarithmetic;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -102,6 +103,19 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
      */
     public static MSet of(MSet... mSets) {
         if (mSets == null || mSets.length == 0) {
+            return new EmptyMSet();
+        } else {
+            return new NonEmptyMSet(mSets);
+        }
+    }
+
+    /**
+     * Copnstruct an MSet from a list of MSets
+     * @param mSets The list of MSets
+     * @return The resulting MSet
+     */
+    public static MSet of(List<MSet> mSets) {
+        if (mSets == null || mSets.isEmpty()) {
             return new EmptyMSet();
         } else {
             return new NonEmptyMSet(mSets);
@@ -368,5 +382,15 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
      * @return The contents of the MSet as a List
      */
     List<MSet> getContent();
+    
+    MSet negateExponent();
+    
+    default MSet sigma() {
+        var c = getContent();
+        if (c.isEmpty()) return this;
+        List<MSet> newC = new ArrayList<>();
+        c.forEach(m -> newC.add(m.negateExponent()));
+        return MSet.of(newC);    
+    }
 
 }

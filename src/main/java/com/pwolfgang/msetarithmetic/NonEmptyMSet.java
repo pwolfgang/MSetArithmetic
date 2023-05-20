@@ -396,15 +396,22 @@ public class NonEmptyMSet implements MSet {
                 return false;
             }
             var thisContent = this.content;
-            var otherContent = other.content;
+            var otherContent = other.clone().content;
             var itr1 = thisContent.iterator();
-            var itr2 = otherContent.iterator();
-            while (itr1.hasNext() && itr2.hasNext()) {
+            while (itr1.hasNext()) {
                 var x = itr1.next();
-                var y = itr2.next();
-                if (!x.equals(y)) return false;
+                var itr2 = otherContent.iterator();
+                boolean found = false;
+                while (!found && itr2.hasNext()) {
+                    var y = itr2.next();
+                    if (x.equals(y)) {
+                        found = true;
+                        itr2.remove();
+                    }
+                }
+                if (!found) return false;
             }
-            return (!itr1.hasNext() && !itr2.hasNext());
+            return true;
         } else {
             return false;
         }
@@ -525,6 +532,18 @@ public class NonEmptyMSet implements MSet {
     @Override
     public List<MSet> getContent() {
         return new ArrayList<>(content);
-    }    
+    }
+
+    @Override
+    public MSet negateExponent() {
+        var c = getContent();
+        List<MSet> newC = new ArrayList<>();
+        c.forEach(m -> newC.add(m.makeAnti()));
+        if (isAnti()) {
+            return MSet.of(newC).makeAnti();
+        } else {
+            return MSet.of(newC);
+        }
+     }
 
 }

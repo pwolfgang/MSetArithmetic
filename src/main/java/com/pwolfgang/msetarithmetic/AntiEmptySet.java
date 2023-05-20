@@ -209,4 +209,10 @@ public class AntiEmptySet implements MSet {
         return Collections.emptyList();
     }
     
+    @Override
+    public MSet negateExponent() {
+        return new EmptyMSet();
+    }
+
+    
 }

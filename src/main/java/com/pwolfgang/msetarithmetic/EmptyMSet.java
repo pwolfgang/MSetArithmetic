@@ -209,4 +209,9 @@ public class EmptyMSet implements MSet {
     public List<MSet> getContent() {
         return Collections.emptyList();
     }
+    
+    @Override
+    public MSet negateExponent() {
+        return new AntiEmptySet();
+    }
 }
