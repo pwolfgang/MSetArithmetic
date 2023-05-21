@@ -40,11 +40,11 @@ containing an empty multiset.
 
     [[[]]] = [[1]] = &#x03B1;
 
-The polynumber 2&#x03B1 is the multiset containing two instances of alpha
+The polynumber 2&#x03B1; is the multiset containing two instances of alpha
 
     [[[]][[]]] = [[1][1]] = 2&#x03B1;
 
-The polynumber &x03B1^2 is represented by the multiset containing a multiset
+The polynumber &#x03B1;^2 is represented by the multiset containing a multiset
 containing two empty multisets.
 
     [[[][]]] = [[2]] = &x03B1;^2
