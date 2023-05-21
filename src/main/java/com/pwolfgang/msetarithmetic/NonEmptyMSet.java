@@ -372,15 +372,20 @@ public class NonEmptyMSet implements MSet {
         if (this.getClass() == o.getClass()) {
             NonEmptyMSet other = (NonEmptyMSet)o;
             var thisContent = this.content;
-            var otherContent = other.content;
-            var itr1 = thisContent.iterator();
-            var itr2 = otherContent.iterator();
-            while (itr1.hasNext() && itr2.hasNext()) {
-                var x = itr1.next();
-                var y = itr2.next();
-                if (!x.equals(y)) return false;
+            var otherContent = other.clone().content;
+            for (var x : thisContent) {
+                var itr2 = otherContent.iterator();
+                boolean found = false;
+                while (!found && itr2.hasNext()) {
+                    var y = itr2.next();
+                    if (x.equals(y)) {
+                        found = true;
+                        itr2.remove();
+                    }
+                }
+                if (!found) return false;
             }
-            return (!itr1.hasNext() && !itr2.hasNext());
+            return true;
         } else {
             return false;
         }
@@ -397,9 +402,7 @@ public class NonEmptyMSet implements MSet {
             }
             var thisContent = this.content;
             var otherContent = other.clone().content;
-            var itr1 = thisContent.iterator();
-            while (itr1.hasNext()) {
-                var x = itr1.next();
+            for (var x : thisContent) {
                 var itr2 = otherContent.iterator();
                 boolean found = false;
                 while (!found && itr2.hasNext()) {

@@ -221,6 +221,18 @@ public class MSetTest {
     }
     
     @Test
+    public void testCrtNat() {
+        System.out.println("2^3");
+        var two = MSet.of(2);
+        var three = MSet.of(3);
+        var twoCrtThree=two.crt(three);
+        System.out.printf("%s: %s\n", "2",two.toString());
+        System.out.printf("%s: %s\n", "3",three.toString());
+        System.out.printf("%s: %s\n", "2^3",twoCrtThree.toString());
+        
+    }
+    
+    @Test
     public void testTree() {
         System.out.println("test Tree");
         MSet a = MSet.of(MSet.of(0),MSet.of(0),MSet.of(2),MSet.of(MSet.of(1)),MSet.of(MSet.of(1)));
