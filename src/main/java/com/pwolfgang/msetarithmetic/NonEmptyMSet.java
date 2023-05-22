@@ -373,9 +373,13 @@ public class NonEmptyMSet implements MSet {
             NonEmptyMSet other = (NonEmptyMSet)o;
             var thisContent = this.content;
             var otherContent = other.clone().content;
+            if (thisContent.size() != otherContent.size()) {
+                return false;
+            }
+            boolean found = false;
             for (var x : thisContent) {
                 var itr2 = otherContent.iterator();
-                boolean found = false;
+                found = false;
                 while (!found && itr2.hasNext()) {
                     var y = itr2.next();
                     if (x.equals(y)) {
@@ -383,9 +387,8 @@ public class NonEmptyMSet implements MSet {
                         itr2.remove();
                     }
                 }
-                if (!found) return false;
             }
-            return true;
+            return found;
         } else {
             return false;
         }
@@ -402,9 +405,13 @@ public class NonEmptyMSet implements MSet {
             }
             var thisContent = this.content;
             var otherContent = other.clone().content;
+            if (thisContent.size() != otherContent.size()) {
+                return false;
+            }
+            boolean found = false;
             for (var x : thisContent) {
                 var itr2 = otherContent.iterator();
-                boolean found = false;
+                found = false;
                 while (!found && itr2.hasNext()) {
                     var y = itr2.next();
                     if (x.equals(y)) {
@@ -412,9 +419,9 @@ public class NonEmptyMSet implements MSet {
                         itr2.remove();
                     }
                 }
-                if (!found) return false;
+                
             }
-            return true;
+            return found;
         } else {
             return false;
         }

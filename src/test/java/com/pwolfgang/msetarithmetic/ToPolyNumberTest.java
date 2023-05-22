@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2023 Paul Wolfgang <paul@pwolfgang.com>
  *
  * This program is free software; you can redistribute it and/or
@@ -15,38 +15,45 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package mainPgms;
+package com.pwolfgang.msetarithmetic;
 
-import com.pwolfgang.msetarithmetic.MSet;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.PrintStream;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  *
  * @author Paul Wolfgang <paul@pwolfgang.com>
  */
-public class Main {
+public class ToPolyNumberTest {
     
-        static void printIt(String s, MSet mSet) {
+    @BeforeEach
+    public void init() {
+        try {
+            PrintStream p = new PrintStream(new FileOutputStream(FileDescriptor.out), true, "UTF-8");
+            System.setOut(p);          
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        
+    }
+    
+    void printIt(String s, MSet mSet) {
         System.out.printf("%s: %s%n", s, mSet.toString());
         System.out.printf("%s: %s%n", s, mSet.toIntegerString());
         System.out.printf("%s: %s%n", s, mSet.asPolyNumber());
+        assertEquals(s, mSet.asPolyNumber());
     }
-
     
-    public static void main(String... args) throws Exception {
-        System.setOut(new PrintStream(System.out, true, "UTF-8"));
-        System.out.printf("%s%n", "\u03b1\u2081\u00b2");
-        var a = MSet.of(MSet.of(3),MSet.of(3),MSet.of(4));
-        var b = MSet.of(0);
-        var c = MSet.of(1);
-        var d = MSet.of(MSet.of(3),MSet.of(7));
-        var sum = MSet.add(a, b, c, d);
-        printIt("a", a);
-        printIt("b", b);
-        printIt("c", c);
-        printIt("d", d);
-        printIt("a+b+c+c", sum);
-
+    @Test
+    public void test1() {
+        var p = MSet.of(MSet.of(0),MSet.of(0),MSet.of(0),MSet.of(1),MSet.of(3),MSet.of(4),MSet.of(4));
+        var s = p.asPolyNumber();
+        printIt("3+\u03B1\u2080+\u03B1\u2080\u00B3+2\u03B1\u2080\u2074",p);
     }
+    
     
 }
