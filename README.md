@@ -48,3 +48,10 @@ The polynumber &#x03B1;<sup>2</sup> is represented by the multiset containing a 
 containing two empty multisets.
 
 [[[][]]] = [[2]] = &#x03B1;<sup>2</sup>
+
+The polynumber 3 + &#x03B1; + &#x03B1;<sup>3</sup> + 2&#x03B1;<sup>4</sup> is represented by
+
+[[][][][[]][[][][]][[][][][]][[][][][]]]
+
+which can be written as [0 0 0 1 3 4 4].
+
