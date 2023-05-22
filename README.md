@@ -55,3 +55,6 @@ The polynumber 3 + &#x03B1; + &#x03B1;<sup>3</sup> + 2&#x03B1;<sup>4</sup> is re
 
 which can be written as [0 0 0 1 3 4 4].
 
+2α₀³+α₀⁴ + 0 + 1 + α₀³+α₀⁷ = 1+3α₀³+α₀⁴+α₀⁷
+
+
