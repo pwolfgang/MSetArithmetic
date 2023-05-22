@@ -55,5 +55,34 @@ public class ToPolyNumberTest {
         printIt("3+\u03B1\u2080+\u03B1\u2080\u00B3+2\u03B1\u2080\u2074",p);
     }
     
+    @Test
+    public void testAlpha() {
+        var alphaSubOne = MSet.of(MSet.of(MSet.of(1)));
+        printIt("\u03B1\u2081", alphaSubOne);
+        printIt("2\u03B1\u2081", MSet.of(MSet.of(MSet.of(1)),MSet.of(MSet.of(1))));
+        printIt("\u03B1\u2081\u00B2", alphaSubOne.mul(alphaSubOne));
+        printIt("\u03B1\u2081\u00B3", MSet.mul(alphaSubOne,alphaSubOne,alphaSubOne));
+        var alphaSubTwo = MSet.of(MSet.of(MSet.of(2)));
+        printIt("\u03B1\u2082", alphaSubTwo);
+        printIt("2\u03B1\u2082", MSet.of(MSet.of(MSet.of(2)),MSet.of(MSet.of(2))));
+        printIt("\u03B1\u2082\u00B2", alphaSubTwo.mul(alphaSubTwo));
+        printIt("\u03B1\u2082\u00B3", MSet.mul(alphaSubTwo,alphaSubTwo,alphaSubTwo));
+    }
+    
+    @Test
+    public void testAlphaExpressions() {
+        var alphaSubOne = MSet.of(MSet.of(MSet.of(1)));
+        var alphaSubTwo = MSet.of(MSet.of(MSet.of(2)));
+        var alphaSubOneCubed = MSet.mul(alphaSubOne,alphaSubOne,alphaSubOne);
+        printIt("\u03B1\u2081\u00B3\u03b1\u2082", alphaSubOneCubed.mul(alphaSubTwo));
+        var alphaSubZero = MSet.of(MSet.of(1));
+        var alpha5alpha7 = MSet.of(MSet.of(MSet.of(5), MSet.of(7)));
+        printIt("\u03B1\u2080", alphaSubZero);
+        var twoAlphaSubZero = alphaSubZero.add(alphaSubZero);
+        printIt("2\u03B1\u2080",twoAlphaSubZero);
+        printIt("\u03B1\u2085\u03b1\u2087", alpha5alpha7);
+        printIt("2\u03B1\u2080+\u03B1\u2085\u03b1\u2087", twoAlphaSubZero.add(alpha5alpha7));
+    }
+    
     
 }
