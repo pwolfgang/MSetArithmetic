@@ -55,6 +55,7 @@ public class MSetTest {
     public void testCreateEmptySet() {
         System.out.println("testCreateEmptySet");
         var m = MSet.of();
+        printIt("m", m);
         assertEquals(0, m.size());
         assertEquals("[]", m.toString());
         assertEquals("0", m.toIntegerString());
@@ -66,6 +67,7 @@ public class MSetTest {
         System.out.println("testOne");
         var zero = MSet.of();
         var one = MSet.of(zero);
+        printIt("one", one);
         assertEquals(1, one.size());
         assertEquals("[[]]", one.toString());
         assertEquals("1", one.toIntegerString());
@@ -78,18 +80,16 @@ public class MSetTest {
         var zero = MSet.of();
         var two = MSet.of(MSet.of(), MSet.of());
         var oneOneTwo = MSet.of(MSet.of(zero), MSet.of(zero), two);
-        var result = oneOneTwo.toIntegerString();
-        System.out.println(result);
-        assertEquals("[1 1 2]", result);
-        System.out.println(oneOneTwo.asPolyNumber());
+        printIt("oneOneTwo", oneOneTwo);
+        assertEquals("[1 1 2]", oneOneTwo.toIntegerString());
     }
     
     @Test 
     public void testPoly2() {
         System.out.println("testPoly2");
         var mSetOf13 = MSet.of(MSet.of(13));
-        assertEquals("[13]", mSetOf13.toIntegerString());
         printIt("13", mSetOf13);
+        assertEquals("[13]", mSetOf13.toIntegerString());
     }
     
     
@@ -103,13 +103,13 @@ public class MSetTest {
         var test3 = MSet.of(MSet.of(0));
         var test4 = MSet.of(0);
         assertEquals("[[1 1] [1 1]]", test1.toIntegerString());
-        printIt("test1", test1);
+        printIt("2α₁²", test1);
         assertEquals("[[3 5 11]]", test2.toIntegerString());
-        printIt("test2", test1);
+        printIt("α₃α₅α₁₁", test2);
         assertEquals("1", test3.toIntegerString());
         assertEquals("0", test4.toIntegerString());
-        printIt("test3", test1);
-        printIt("test4", test1);
+        printIt("1", test3);
+        printIt("0", test4);
     }
     
     @Test
@@ -118,17 +118,13 @@ public class MSetTest {
         var a = MSet.of(MSet.of(MSet.of(4)), MSet.of(MSet.of(3)));
         var b = MSet.of(MSet.of(MSet.of(1),MSet.of(1),MSet.of(2)),MSet.of(MSet.of(4)), MSet.of(0));
         var c = MSet.of(MSet.of(4),MSet.of(MSet.of(1),MSet.of(2),MSet.of(1)));
-        System.out.printf("a: %s%n", a.toIntegerString());
-        System.out.printf("b: %s%n", b.toIntegerString());
-        System.out.printf("c: %s%n", c.toIntegerString());
-        System.out.printf("a: %s%n", a.asPolyNumber());
-        System.out.printf("b: %s%n", b.asPolyNumber());
-        System.out.printf("c: %s%n", c.asPolyNumber());
-        var sum = MSet.add(a, b, c);
         printIt("a", a);
         printIt("b", b);
-        printIt("C", c);
+        printIt("c", c);
+        var sum = MSet.add(a, b, c);
         printIt("a+b+c",sum);
+        var expected = MSet.parse("[0 4 [3] [4] [4] [1 1 2] [1 1 2]]");
+        assertEquals(expected, sum);
     }
     
     @Test
@@ -144,6 +140,8 @@ public class MSetTest {
         printIt("C", c);
         printIt("d", d);
         printIt("a+b+c+d",sum);
+        var expected = MSet.parse("[0 3 3 3 4 7]");
+        assertEquals(expected, sum);
     }
     
     @Test
@@ -152,6 +150,9 @@ public class MSetTest {
         var x = MSet.of(2);
         var y = MSet.of(3);
         var p = MSet.mul(x,y);
+        printIt("x", x);
+        printIt("y", y);
+        printIt("x × y", p);
         assertEquals("6", p.toIntegerString());
     }
     
@@ -161,6 +162,9 @@ public class MSetTest {
         var x = MSet.of(MSet.of(2), MSet.of(3));
         var y = MSet.of(MSet.of(1), MSet.of(1), MSet.of(0));
         var z = MSet.of(MSet.of(3),MSet.of(3),MSet.of(2),MSet.of(4),MSet.of(4),MSet.of(3));
+        printIt("x", x);
+        printIt("y", y);
+        printIt("x × y", MSet.mul(x,y));
         assertEquals(z.toIntegerString(),MSet.mul(x,y).toIntegerString());
     }
     
@@ -172,9 +176,11 @@ public class MSetTest {
         var z = MSet.of(MSet.of(2), MSet.of(7));
         var e = MSet.of(MSet.of(3), MSet.of(8), MSet.of(6), MSet.of(11), MSet.of(6), MSet.of(11), MSet.of(9), MSet.of(14));
         var r = MSet.mul(x, y, z);
-        System.out.printf("e: %s%n", e.toIntegerString());
-        System.out.printf("r: %s%n", r.toIntegerString());
-        assertEquals(e.toIntegerString(),r.toIntegerString());     
+        printIt("x", x);
+        printIt("y", y);
+        printIt("z", z);
+        printIt("x × y × z", r);
+        assertEquals(e, r);     
     }
     
     @Test
@@ -182,10 +188,13 @@ public class MSetTest {
         System.out.println("testMulMulti");
         var x = MSet.of(MSet.of(MSet.of(0), MSet.of(0), MSet.of(2)),MSet.of(MSet.of(3),MSet.of(8)));
         var y = MSet.of(MSet.of(MSet.of(11)),MSet.of(2),MSet.of(MSet.of(9)));
-        System.out.printf("x: %s%n", x.toIntegerString());
-        System.out.printf("y: %s%n", y.toIntegerString());
-        System.out.printf("x * y: %s%n", MSet.mul(x,y).toIntegerString());
-    }
+        printIt("x", x);
+        printIt("y", y);
+        var r = MSet.mul(x, y);
+        var e = MSet.parse("[[3 8 11] [3 8 9] [0 0 3 8] [0 0 2 11] [0 0 2 9] [0 0 0 0 2]]");
+        printIt("x × y", r);
+        assertEquals(e, r);
+   }
     
     @Test
     public void testMulMulti2() {
@@ -193,11 +202,13 @@ public class MSetTest {
         var x = MSet.of(MSet.of(MSet.of(2)),MSet.of(3));
         var y = MSet.of(MSet.of(MSet.of(4)),MSet.of(MSet.of(4)));
         var z = MSet.of(MSet.of(MSet.of(1),MSet.of(6)),MSet.of(0));
-        var p = MSet.mul(x,y,z);
-        System.out.printf("x: %s%n", x.toIntegerString());
-        System.out.printf("y: %s%n", y.toIntegerString());
-        System.out.printf("x: %s%n", z.toIntegerString());
-        System.out.printf("p: %s%n", p.toIntegerString());
+        var r = MSet.mul(x,y,z);
+        var e = MSet.parse("[[2 4] [2 4] [0 0 0 4] [0 0 0 4] [1 2 4 6] [1 2 4 6] [0 0 0 1 4 6] [0 0 0 1 4 6]]");
+        printIt("x", x);
+        printIt("y", y);
+        printIt("x", z);
+        printIt("x × y × z", r);
+        assertEquals(e, r);
     }
     
     @Test
@@ -205,9 +216,12 @@ public class MSetTest {
         System.out.println("testCrt");
         var a = MSet.of(MSet.of(MSet.of(1),MSet.of(2)),MSet.of(4));
         var b = MSet.of(MSet.of(0),MSet.of(MSet.of(0),MSet.of(3)));
-        System.out.printf("a: %s%n", a.toIntegerString());
-        System.out.printf("b: %s%n", b.toIntegerString());
-        System.out.printf("a^b: %s%n", MSet.crt(a,b).toIntegerString());
+        var r = MSet.crt(a,b);
+        var e = MSet.parse("[0 0 [1 2 4 5] [0 0 0 0 3 3 3 3]]");
+        printIt("a", a);
+        printIt("b", b);
+        printIt("a ^ b", r);
+        assertEquals(e, r);
     }
     
     @Test
@@ -215,39 +229,48 @@ public class MSetTest {
         System.out.println("testCrt2");
         var a = MSet.of(MSet.of(MSet.of(1),MSet.of(MSet.of(2))),MSet.of(MSet.of(3)));
         var b = MSet.of(MSet.of(2),MSet.of(MSet.of(1),MSet.of(3)));
-        System.out.printf("a: %s%n", a.toIntegerString());
-        System.out.printf("b: %s%n", b.toIntegerString());
-        System.out.printf("a^b: %s%n", MSet.crt(a,b).toIntegerString());
+        var r = MSet.crt(a,b);
+        var e = MSet.parse("[[3 3] [4 6] [1 1 [2] [2]] [2 4 [0 2] [0 0 0 2]]]");
+        printIt("a", a);
+        printIt("b", b);
+        printIt("a ^ b", r);
+        assertEquals(e, r);
     }
     
     @Test
     public void testCrtNat() {
-        System.out.println("2^3");
+        System.out.println("testCrtNat");
         var two = MSet.of(2);
         var three = MSet.of(3);
-        var twoCrtThree=two.crt(three);
-        System.out.printf("%s: %s\n", "2",two.toString());
-        System.out.printf("%s: %s\n", "3",three.toString());
-        System.out.printf("%s: %s\n", "2^3",twoCrtThree.toString());
-        
+        var r = MSet.crt(two, three);
+        var e = MSet.parse("[[] [] [] [] [] []]");
+        printIt("2", two);
+        printIt("3", three);
+        printIt("2 ^ 3", r);
+        assertEquals(e, r);       
     }
     
     @Test
     public void testTree() {
         System.out.println("test Tree");
         MSet a = MSet.of(MSet.of(0),MSet.of(0),MSet.of(2),MSet.of(MSet.of(1)),MSet.of(MSet.of(1)));
-        System.out.println(a.toString());
-        System.out.println(a.toStringWithHeight());
-        System.out.println(a.toIntegerString());
-        System.out.printf("Z(a): %S%n", a.Z().toString());
-        System.out.printf("Z(a): %S%n", a.Z().toIntegerString());
-        System.out.printf("N(a): %S%n", a.N().toString());
-        System.out.printf("N(a): %S%n", a.N().toIntegerString());
-        System.out.printf("P(a): %S%n", a.P().toString());
-        System.out.printf("P(a): %S%n", a.P().toIntegerString());
-        System.out.printf("M(a): %S%n", a.M().toString());
-        System.out.printf("M(a): %S%n", a.M().toIntegerString());
-        System.out.println(a.asPolyNumber());
+        var z = a.Z();
+        var n = a.N();
+        var p = a.P();
+        var m = a.M();
+        var zE = MSet.of(0);
+        var nE = MSet.of(5);
+        var pE = MSet.parse("[0 0 1 1 2]");
+        var mE = MSet.parse("[0 0 2 [1] [1]]");
+        printIt("a", a);
+        printIt("Z(a)", z);
+        printIt("N(a)", n);
+        printIt("P(a)", p);
+        printIt("M(a)", m);
+        assertEquals(zE, z);
+        assertEquals(nE, n);
+        assertEquals(pE, p);
+        assertEquals(mE, m);
     }
     
     
@@ -256,21 +279,17 @@ public class MSetTest {
         System.out.println("test tree 2");
         MSet a = MSet.of(MSet.of(1),MSet.of(MSet.of(1)),MSet.of(0));
         MSet b = MSet.of(MSet.of(0),MSet.of(2));
-        System.out.printf("a: %s%n", a.toString());
-        System.out.printf("a: %s%n", a.toIntegerString());
-        System.out.printf("a: %s%n", a.asPolyNumber());
-        System.out.printf("b: %s%n", b.toString());
-        System.out.printf("b: %s%n", b.toIntegerString());
-        System.out.printf("b: %s%n", b.asPolyNumber());
-        System.out.printf("a+b: %s%n", MSet.add(a,b).toString());
-        System.out.printf("a+b: %s%n", MSet.add(a,b).toIntegerString());
-        System.out.printf("a+b: %s%n", MSet.add(a,b).asPolyNumber());
-        System.out.printf("a×b: %s%n", MSet.mul(a,b).toString());
-        System.out.printf("a×b: %s%n", MSet.mul(a,b).toIntegerString());
-        System.out.printf("a×b: %s%n", MSet.mul(a,b).asPolyNumber());
-        System.out.printf("a^b: %s%n", MSet.crt(a,b).toString());
-        System.out.printf("a^b: %s%n", MSet.crt(a,b).toIntegerString());
-        System.out.printf("a^b: %s%n", MSet.crt(a,b).asPolyNumber());
+        printIt("a", a);
+        printIt("b", b);
+        var aPlusB = a.add(b);
+        var aMulB = a.mul(b);
+        var aCrtB = a.crt(b);
+        var aPlusB_e = MSet.parse("[0 0 1 2 [1]]");
+        var aMulB_e = MSet.parse("[0 1 2 3 [1] [0 0 1]]");
+        var aCrtB_e = MSet.parse("[0 0 0 0 2 [1 1]]");
+        assertEquals(aPlusB_e, aPlusB);
+        assertEquals(aMulB_e, aMulB);
+        assertEquals(aCrtB_e, aCrtB);
     }
     
     @Test

@@ -118,7 +118,7 @@ public class MF232Tests {
         var oneAnti = MSet.add(MSet.of(1), zeroAnti);
         var q = MSet.of(zero, oneAnti, twoAnti, MSet.of(3));
         printIt("1+-1α₀+-1α₀²+α₀³",q);
-        printIt_noAssert("p+q",MSet.add(p,q));
+        printIt("3+-1α₀+2α₀²+α₀³+α₀⁵",MSet.add(p,q));
     }
     
     @Test
@@ -131,7 +131,7 @@ public class MF232Tests {
         var q = MSet.of(zero, zero, zero, twoAnti);
         printIt_noAssert("p", p);
         printIt_noAssert("q", q);
-        printIt_noAssert("6+3α₀+-2α₀²+-1α₀³", MSet.mul(p,q));
+        printIt("6+3α₀+-2α₀²+-1α₀³", MSet.mul(p,q));
         
     }
     
@@ -153,7 +153,7 @@ public class MF232Tests {
         var oneMinusAlpha = MSet.of(MSet.of(0),MSet.of(1).makeAnti());
         printIt("1+-1\u03B1\u2080", oneMinusAlpha);
         var oneMinusAlphaCubed = MSet.mul(oneMinusAlpha, oneMinusAlpha, oneMinusAlpha);
-        printIt_noAssert("(1-\u03B1)\u00B3", oneMinusAlphaCubed);
+        printIt("1+-3α₀+3α₀²+-1α₀³", oneMinusAlphaCubed);
     }
     
 }
