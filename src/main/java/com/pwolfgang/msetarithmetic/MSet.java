@@ -392,5 +392,67 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
         c.forEach(m -> newC.add(m.negateExponent()));
         return MSet.of(newC);    
     }
+    
+    /** Convert an integer String representation of an MSet into an MSet.
+     * 
+     * @param s The String to be parsed
+     * @return MSet equivalend
+     */
+    static MSet parse(String s) {
+        List<MSet> result = new ArrayList<>();
+        int k = 0;
+        while (k < s.length() && s.charAt(k) != '[') {k++;}
+        if (k == s.length()) return null;
+        parse(s, k+1, result);
+        return MSet.of(result);
+    }
+    
+    /** Congert an integer String representation of an MSet into an MSet
+     * An MSet is a list of MSets enclosed within '[' and ']'. An integer 
+     * <i>n</i> represents <i>n</i> empty MSets. If <i>n</i> is negative
+     * these are anti empty MSets.
+     * @param s The String to be parsed
+     * @param k The index one passed the opening '['
+     * @return 
+     */
+    private static int parse(String s, int k, List<MSet> result) {
+            for (char c = s.charAt(k); c != ']'; c=s.charAt(++k)) {
+                switch (c) {
+                    case '[' -> {
+                        List<MSet> list = new ArrayList<>();
+                        k = parse(s, k+1, list);
+                        result.add(MSet.of(list));
+                    }
+                    case '-' -> {
+                        result.add(MSet.of(- parseInt(s,k+1)));
+                        c = s.charAt(++k);
+                        while (Character.isDigit(c)) {
+                            c = s.charAt(++k);
+                        }
+                        --k;
+                    }
+                    case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> { 
+                        result.add(MSet.of(parseInt(s,k)));
+                        c = s.charAt(k);
+                        while (Character.isDigit(c)) {
+                            c = s.charAt(++k);
+                        }
+                        --k;
+                    }
+                    case ' ' -> {
+                    }
+                }
+            }
+        return k;
+    }
+    
+    private static int parseInt(String s, int k) {
+        int n = 0;
+        for (char c = s.charAt(k); Character.isDigit(c); c=s.charAt(++k)) {
+            n = n * 10;
+            n = n + (c - '0');
+        }
+        return n;
+    }
 
 }
