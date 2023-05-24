@@ -81,9 +81,12 @@ public class NegativeExponentsTest {
         var three = MSet.of(3);
         var lhs = MSet.of(minusThree, minusOne, twoAnti);
         var rhs = MSet.of(minusOneAnti, zero, two, three);
+        var sum = lhs.add(rhs);
+        var sum_e = MSet.parse("[0 3 -3]");
         printIt_noAssert("lhs", lhs);
         printIt_noAssert("rhs", rhs);
-        printIt_noAssert("sum", MSet.add(lhs,rhs));
+        printIt_noAssert("sum", sum);
+        assertEquals(sum_e, sum);
     }
     
     @Test
@@ -94,10 +97,12 @@ public class NegativeExponentsTest {
         var threeAnti = MSet.of(3).makeAnti();
         var lhs = MSet.of(minusTwo, one);
         var rhs = MSet.of(minusOne, minusOne, threeAnti);
+        var prod_e = MSet.parse("[0 0 1ᵃ -3 -3 4ᵃ]");
+        var prod = MSet.mul(lhs,rhs);
         printIt_noAssert("lhs", lhs);
         printIt_noAssert("rhs", rhs);
-        printIt_noAssert("prod", MSet.mul(lhs, rhs));
-        
+        printIt_noAssert("prod", prod);
+        assertEquals(prod_e, prod);
     }
         
 }

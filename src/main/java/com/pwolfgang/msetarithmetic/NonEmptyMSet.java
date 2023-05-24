@@ -175,10 +175,14 @@ public class NonEmptyMSet implements MSet {
             if (isAnti()) {
                 return n + "\u1D43";
             } else {
-                return Integer.toString(countOfEmptySets);
+                return n;
             }
         } else {
-            return sj.toString();
+            if (isAnti()) {
+                return sj.toString() + "\u1D43";
+            } else {
+                return sj.toString();
+            }
         }
     }
     

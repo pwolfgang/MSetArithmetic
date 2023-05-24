@@ -72,7 +72,6 @@ public class SigmaTest {
         printIt("\u03B1\u2080\u207B\u00B9", alphaMone);
         var alphaMone2 = alpha.sigma();
         printIt("\u03B1\u2080\u207B\u00B9", alphaMone2);
-        System.out.println("\n\n\n");
     }
     
     @Test

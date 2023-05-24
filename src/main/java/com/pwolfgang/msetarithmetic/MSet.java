@@ -403,8 +403,13 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
         int k = 0;
         while (k < s.length() && s.charAt(k) != '[') {k++;}
         if (k == s.length()) return null;
-        parse(s, k+1, result);
-        return MSet.of(result);
+        k = parse(s, k+1, result);
+        char c = s.charAt(k);
+        if (c == '\u1D43') {
+            return MSet.of(result).makeAnti();
+        } else {
+            return MSet.of(result);
+        }
     }
     
     /** Congert an integer String representation of an MSet into an MSet
@@ -421,23 +426,38 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
                     case '[' -> {
                         List<MSet> list = new ArrayList<>();
                         k = parse(s, k+1, list);
-                        result.add(MSet.of(list));
+                       if (s.charAt(k+1) == '\u1D43') {
+                            result.add(MSet.of(list).makeAnti());
+                            k++;
+                        } else {
+                            result.add(MSet.of(list));
+                        }
                     }
                     case '-' -> {
-                        result.add(MSet.of(- parseInt(s,k+1)));
+                        var i = -parseInt(s, k+1);
                         c = s.charAt(++k);
                         while (Character.isDigit(c)) {
                             c = s.charAt(++k);
                         }
-                        --k;
+                        if (c == '\u1D43') {
+                            result.add(MSet.of(i).makeAnti());
+                        } else {
+                            result.add(MSet.of(i));
+                            --k;
+                        }
                     }
-                    case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> { 
-                        result.add(MSet.of(parseInt(s,k)));
+                    case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
+                        int i = parseInt(s,k);
                         c = s.charAt(k);
                         while (Character.isDigit(c)) {
                             c = s.charAt(++k);
                         }
-                        --k;
+                        if (c == '\u1D43') {
+                            result.add(MSet.of(i).makeAnti());
+                        } else {
+                            result.add(MSet.of(i));
+                            --k;
+                        }
                     }
                     case ' ' -> {
                     }

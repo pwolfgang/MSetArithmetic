@@ -187,7 +187,7 @@ public class MSetTest3 {
         var alphaThreePlusAlphaFour=MSet.add(alphaThree,alphaFour);
         printIt("\u03B1\u2083", alphaThree);
         printIt("\u03B1\u2084", alphaFour);
-        printItNoAssert("\u03B1\u2083+\u03B1\u2084", alphaThreePlusAlphaFour);
+        printIt("\u03B1\u2083+\u03B1\u2084", alphaThreePlusAlphaFour);
         System.out.println("\n\n\n");
     }
 }

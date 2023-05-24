@@ -17,7 +17,11 @@
  */
 package com.pwolfgang.msetarithmetic;
 
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -26,6 +30,36 @@ import org.junit.jupiter.api.Test;
  */
 public class TestParse {
     
+    @BeforeEach
+    public void init() {
+        try {
+            PrintStream p = new PrintStream(new FileOutputStream(FileDescriptor.out), true, "UTF-8");
+            System.setOut(p);          
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        
+    }
+    
+    void printIt(String s, MSet mSet) {
+        String mSetToString = mSet.toString();
+        String mSetToIntegerString = mSet.toIntegerString();
+        String mSetAsPolyNumber = mSet.asPolyNumber();
+        System.out.printf("%s: %s%n", s, mSetToString);
+        System.out.printf("%s: %s%n", s, mSetToIntegerString);
+        System.out.printf("%s: %s%n", s, mSetAsPolyNumber);
+        assertEquals(s, mSet.asPolyNumber());
+    }
+
+    void printIt_noAssert(String s, MSet mSet) {
+        String mSetToString = mSet.toString();
+        String mSetToIntegerString = mSet.toIntegerString();
+        String mSetAsPolyNumber = mSet.asPolyNumber();
+        System.out.printf("%s: %s%n", s, mSetToString);
+        System.out.printf("%s: %s%n", s, mSetToIntegerString);
+        System.out.printf("%s: %s%n", s, mSetAsPolyNumber);
+    }
+
     @Test
     public void testEmpty() {
         assertEquals(MSet.of(0), MSet.parse("[]"));
@@ -55,6 +89,24 @@ public class TestParse {
         System.out.println(q.toIntegerString());
         System.out.println(q.asPolyNumber());
         assertEquals(p, q);
+    }
+    
+    @Test
+    public void testAntiInt() {
+        var r = MSet.parse("[2\u1D43]");
+        var e = MSet.of(MSet.of(2).makeAnti());
+        printIt_noAssert("r", r);
+        printIt_noAssert("e", e);
+        assertEquals(e,r);
+    }
+    
+    @Test
+    public void testAntiMSet() {
+        var r = MSet.parse("[[2]\u1D43]");
+        var e = MSet.of(MSet.of(MSet.of(2)).makeAnti());
+        printIt_noAssert("r", r);
+        printIt_noAssert("e", e);
+        assertEquals(e,r);        
     }
     
 }

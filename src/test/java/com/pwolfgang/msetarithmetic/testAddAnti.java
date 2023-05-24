@@ -68,7 +68,20 @@ public class testAddAnti {
         printIt("1", one);
         printIt("2\u1D43", twoAnti);
         var sum = MSet.add(one,twoAnti);
-        printIt_noAssert("1+2\u1D43", sum);
+        printIt("3\u1D43", sum);
+    }
+    
+    @Test
+    public void testMultPoly() {
+        var x = MSet.parse("[0 0 1]");
+        var y = MSet.parse("[0 0 0 2\u1D43]");
+        var r = MSet.mul(x,y);
+        var e = MSet.parse("[0 0 0 2\u1D43 0 0 0 2\u1D43 1 1 1 3\u1D43]");
+        printIt_noAssert("x", x);
+        printIt_noAssert("y", y);
+        printIt_noAssert("x × y", r);
+        printIt_noAssert("e", e);
+        assertEquals(e,r);
     }
 
 }
