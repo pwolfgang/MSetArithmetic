@@ -423,7 +423,9 @@ public class NonEmptyMSet implements MSet {
                         itr2.remove();
                     }
                 }
-                
+                if (!found) {
+                    return false;
+                }
             }
             return found;
         } else {

@@ -35,6 +35,17 @@ public class Main {
     
     public static void main(String... args) throws Exception {
         System.setOut(new PrintStream(System.out, true, "UTF-8"));
+        polyNumber();
+        multiNumber();
+        polySumExample();
+        polyMultExample();
+        multiSumExample();
+        multiMultExample();
+
+    }
+    
+    static void polySumExample() {
+        System.out.println("Example of sum of polynumbers");
         System.out.printf("%s%n", "\u03b1\u2081\u00b2");
         var a = MSet.of(MSet.of(3),MSet.of(3),MSet.of(4));
         var b = MSet.of(0);
@@ -45,8 +56,63 @@ public class Main {
         printIt("b", b);
         printIt("c", c);
         printIt("d", d);
-        printIt("a+b+c+c", sum);
-
+        printIt("a+b+c+c", sum);        
+    }
+    
+    static void polyNumber() {
+        System.out.println("Examples of polynumbers");
+        var p1 = MSet.parse("[1 1 2]");
+        var p2 = MSet.parse("[13]");
+        var p3 = MSet.parse("[0 0]");
+        var p4 = MSet.parse("[ ]");
+        printIt("p1", p1);
+        printIt("p2", p2);
+        printIt("p3", p3);
+        printIt("p4", p4);
+    }
+    
+    static void multiNumber() {
+        System.out.println("Examples of multinumbers");
+        var m1 = MSet.parse("[[1 1][1 1]]");
+        var m2 = MSet.parse("[[3 5 11]]");
+        var m3 = MSet.parse("[0]");
+        var m4 = MSet.parse("[ ]");
+        printIt("m1", m1);
+        printIt("m2", m2);
+        printIt("m3", m3);
+        printIt("m4", m4);
+        
+    }
+    
+    static void polyMultExample(){
+        System.out.println("Example of polynumber multiplication");
+        var p1 = MSet.parse("[2 3]");
+        var p2 = MSet.parse("[1 1 0]");
+        var p = MSet.mul(p1, p2);
+        printIt("p1", p1);
+        printIt("p2", p2);
+        printIt("p1 × p1", p);
+    }
+    
+    static void multiSumExample(){
+        System.out.println("Example of multinumber addition ");
+        var m1 = MSet.parse("[[3][4]]");
+        var m2 = MSet.parse("[[1 1 2][4] 0]");
+        var m3 = MSet.parse("[4 [1 2 1]]");
+        var s = MSet.add(m1,m2,m3);
+        printIt("m1", m1);
+        printIt("m2", m2);
+        printIt("m3", m3);
+        printIt("m1 + m2 + m3", s);
+    }
+    
+    static void multiMultExample(){
+        System.out.println("Example of multinumber multiplication");
+        var m1 = MSet.parse("[[0 0 2][3 8]]");
+        var m2 = MSet.parse("[[1 1] 2 [9]]");
+        printIt("m1", m1);
+        printIt("m2", m2);
+        printIt("m1 × m2", MSet.mul(m1, m2));
     }
     
 }

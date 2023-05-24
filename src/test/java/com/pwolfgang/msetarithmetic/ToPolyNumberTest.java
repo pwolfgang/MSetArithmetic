@@ -84,5 +84,18 @@ public class ToPolyNumberTest {
         printIt("2\u03B1\u2080+\u03B1\u2085\u03b1\u2087", twoAlphaSubZero.add(alpha5alpha7));
     }
     
+    @Test
+    public void testMultinumberMul() {
+        System.out.println("Example of multinumber multiplication");
+        var m1 = MSet.parse("[[0 0 2][3 8]]");
+        var m2 = MSet.parse("[[1 1] 2 [9]]");
+        var p = MSet.mul(m1, m2);
+        var asPolyNumber = p.asPolyNumber();
+        printIt("m1", m1);
+        printIt("m2", m2);
+        printIt("m1 × m2", MSet.mul(m1, m2));
+
+    }
+    
     
 }
