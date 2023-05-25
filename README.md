@@ -35,37 +35,40 @@ which can be written as [0 0 0 1 3 4 4].
 
 ## Multinumbers
 
-A muultinumber is an mset of poly numbers.
+A muultinumber is an mset of poly numbers. For example:
+
+[0 0 0 [1] [1 1] [1 1] [1 1] [1 1] [1 1 1 1 1]]
+
+Interpreting polynumbers as polynomials the "variable" &#x03B1; is used. Encapsulating a polynumber
+into a mset introduces additional "variables". &#x03B1; now becomes &#x03B1;<sub>0</sub>, then
+[&#x03B1;<sub>0</sub>] becomes &#x03B1;<sub>1</sub>. In general m&#x03B1;<sub>k</sub><sup>n</sup>
+is represented by an mset containing m copies of the mset containing n copies of the number k.
+
+ [0 0 2 3 3 3 3 [1] [1] [1] [0 1] [0 1] [0 1] [0 1] [0 1] [0 0 1 1]]
+ 
+ Represents
+ 
+ 2+α₀²+4α₀³+3α₁+5α₀α₁+α₀²α₁²
+ 
+ ## Operations
 
 ### Addition
 Addition of multisets is performed by creating a new multiset that contains the
-contents of the multisets being combined. For example:
+contents of the multisets being combined.
+
+#### Addition of natural numbers
 
 [[][]] + [[][][]] = [[][][][][]] (2 + 3 = 5)
 
-As will be seen later, addition of multisets extends beyond natural numbers.
-### Multiplication
-Multiplication of two multisets is performed by adding each mset in the LHS
-to each mset in the rhs. For example:
+#### Addition of polynumbers
 
-[[][]] × [[][][]] = [[][][] [][][]] (2 × 3 = 6)
-
-The first empty set in the LHS is added to each of the three empty sets in the
-rhs giving three empty sets. Then the second empty set is added to the three
-empty sets giving a total of six. As will be seen later this applies to more
-than natural numbers. Multiplication is associative.
-### Caret
-The caret operator (^) is similar to multiplication except that each LHS element
-is multiplied by each RHS element.
-
-[[[][]] ^ [[][][]] = [[][][][][][]]
-
-For natural numbers this operation is effectively the same as multiplication.
-For more complicated multisets it is more meaningful.
-
-
-
+[3 3 4] + 0 + 1 + [3 7] = [0 3 3 3 4 7]
 
 2α₀³+α₀⁴ + 0 + 1 + α₀³+α₀⁷ = 1+3α₀³+α₀⁴+α₀⁷
 
+#### Addition of multinumbers
+
+[[4] [3]] + [0 [4] [1 1 2]] + [4 [1 1 2]] = [0 4 [4] [4] [3] [1 1 2] [1 1 2]]
+
+α₄+α₃ + 1+α₄+α₁²α₂ + α₀⁴+α₁²α₂ = 1+α₀⁴+2α₄+α₃+2α₁²α₂ 
 
