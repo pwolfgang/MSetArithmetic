@@ -41,7 +41,9 @@ public class Main {
         polyMultExample();
         multiSumExample();
         multiMultExample();
-
+        multiNumberVSpolyNumber();
+        biPolyNumberExample();
+        caretExample();
     }
     
     static void polySumExample() {
@@ -115,4 +117,45 @@ public class Main {
         printIt("m1 × m2", MSet.mul(m1, m2));
     }
     
+    static void multiNumberVSpolyNumber() {
+        System.out.println("multiNumber vs polyNumber");
+        var polyNumber = MSet.parse("[0 0 0 1 2 2 2 2 5]");
+        var multiNumber = MSet.parse("[0 0 0 [1] [1 1][1 1][1 1][1 1][1 1 1 1 1]]");
+        printIt("polyNumber", polyNumber);
+        printIt("multiNumber", multiNumber);
+    } 
+    
+    static void biPolyNumberExample() {
+        System.out.println("bipolynumber example");
+        var b = MSet.parse("[0 0 [0 0] [0 0 0][0 0 0][0 0 0][0 0 0][1][1][1][0 1][0 1][0 1][0 1][0 1][0 0 1 1]]");
+        printIt("b", b);
+    }
+    
+    static void caretExample() {
+        System.out.println("caret example");
+        System.out.println("Natural numbers");
+        var a = MSet.of(2);
+        var b = MSet.of(3);
+        printIt("a", a);
+        printIt("b", b);
+        printIt("a ^ b", a.crt(b));
+        System.out.println("polynumbers");
+        var p1 = MSet.parse("[2 3]");
+        var p2 = MSet.parse("[1 1 0]");
+        var p = MSet.crt(p1, p2);
+        printIt("p1", p1);
+        printIt("p2", p2);
+        printIt("p1 ^ p1", p);
+        System.out.println("multinumber example");
+        a = MSet.parse("[ [1 2] 4]");
+        b = MSet.parse("[0 [0 3]]");
+        printIt("a", a);
+        printIt("b", b);
+        printIt("a ^ b", a.crt(b));
+        a = MSet.parse("[[1[2]][3]]");
+        b = MSet.parse("[2[1 3]]");
+        printIt("a", a);
+        printIt("b", b);
+        printIt("a ^ b", a.crt(b));        
+    }
 }
