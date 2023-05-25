@@ -25,7 +25,7 @@ containing two empty multisets, which is the mset containing the natural number 
 
 [[[][]]] = [[2]] = &#x03B1;<sup>2</sup>
 
-In general, m&#x03b1<sup>n</sup> is represented by an mset containing m copies of the natural number n.
+In general, m&#x03b1;<sup>n</sup> is represented by an mset containing m copies of the natural number n.
 
 The polynumber 3 + &#x03B1; + &#x03B1;<sup>3</sup> + 2&#x03B1;<sup>4</sup> is represented by
 
