@@ -72,3 +72,60 @@ contents of the multisets being combined.
 
 α₄+α₃ + 1+α₄+α₁²α₂ + α₀⁴+α₁²α₂ = 1+α₀⁴+2α₄+α₃+2α₁²α₂ 
 
+### Multiplication
+
+Multiplication of msets is accomplished by forming all possible combinations of the contents
+of the msets being multiplied and adding them. For example [A B C] × [X Y] = [A+X A+Y B+X B+Y C+X C+Y].
+
+#### Multiplication of natural numbers
+
+[[][]] × [[][][]] = [[]+[] []+[] []+[] []+[] []+[] []+[]]
+
+since []+[] = [] the result is 
+
+[[][]] × [[][][]] = [[] [] [] [] [] []] or 2 × 3 = 6
+
+#### Multiplication of polynumbers
+
+[2 3] × [0 1 1] = [2 3 3 3 4 4]
+
+α₀²+α₀³ × 1+2α₀ = α₀²+3α₀³+2α₀⁴
+
+#### Multiplication of multinumbers
+
+[[3 8] [0 0 2]] × [2 [9] [1 1]] = [[3 8 9] [1 1 3 8] [0 0 3 8] [0 0 2 9] [0 0 1 1 2] [0 0 0 0 2]]
+
+α₃α₈+α₀²α₂ × α₀²+α₉+α₁² = α₃α₈α₉+α₁²α₃α₈+α₀²α₃α₈+α₀²α₂α₉+α₀²α₁²α₂+α₀⁴α₂
+
+### The caret operator
+
+The caret operator is similar to the multiplication operator except that the pairs are multiplied. While 
+the operation sysmbol ^ usually represents exponentation, this operation does not have the properties
+of exponenation.
+
+#### Caret applied to natural numbers
+
+For natural numbers the caret opeator is the same a multiplicaiton.
+
+[[] []] ^ [[] [] []] = [[] [] [] [] [] []]
+
+2 ^ 3 = 6
+
+#### Caret applied to polynumbers
+
+[2 3] ^ [0 1 1] = [0 0 2 2 3 3]
+
+α₀²+α₀³ ^  1+2α₀ = 2+2α₀²+2α₀³
+
+#### Caret applied to multinumbers
+
+[4 [1 2]] ^ [0 [0 3]] = [0 0 [1 2 4 5] [0 0 0 0 3 3 3 3]]
+
+α₀⁴+α₁α₂ ^ 1+α₀α₃ = 2+α₁α₂α₄α₅+α₀⁴α₃⁴
+
+
+
+
+
+
+
