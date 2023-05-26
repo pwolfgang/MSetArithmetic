@@ -123,6 +123,50 @@ For natural numbers the caret opeator is the same a multiplicaiton.
 
 α₀⁴+α₁α₂ ^ 1+α₀α₃ = 2+α₁α₂α₄α₅+α₀⁴α₃⁴
 
+## Negative numbers
+
+Need to define -1 that sitifies 1 + -1 = 0 and 1 × -1 = 1
+
+The anti-zero 0&#x1043; or []&#x1043; has the property that if we try to create the mset [0 0&#x1043;] the result is []
+the 0 and the 0&#x1043; anilate eachother much like particles and anti-particles do in physics. Thus 
+
+1 = [0] or [[]] and -1 = [0&#x1D34;] or []&#x1D34; results in 1 + -1 = [0 0&#x1D34;] = [] = 0
+
+### Arithmetic with ant-izero
+
+#### 1 × 0 = 0
+
+1 × 0 = [0] × []
+
+Since [0 0&#x1D34;] = [] 
+
+1 × 0 = [0] × [] = [0] × [0 0&#x1D34;] = [0+0 0+0&#x1D34;] = [0 0&#x1D34;] = []
+
+Conclusion is that 0+0&#x1D34; = 0&#x1D34; and 0&#x1D34;+0 = 0&#x1D34;
+
+#### 0 × 0 = 0
+
+0 × 0 = [] × [] = [0 0&#x1D34;] × [0 0&#x1D34;] = [0+0 0+0&#x1D34; 0&#x1D34;+0 0&#x1D34;+0&#x1D34;]
+
+[0+0 0+0&#x1D34; 0&#x1D34;+0 0&#x1D34;+0&#x1D34;] = [0 0&#x1D34; 0&#x1D34; 0&#x1D34;+0&#x1D34;] = [0&#x1D34; 0&#x1D34;+0&#x1D34;]
+
+Conclusion 0&#x1D34;+0&#x1D34; = 0
+
+#### 1 ^ 0 and 0 ^ 0
+
+Similar analysis concludes that 0×0&#x1D43; = 0&#x1D43; and 0&#x1D43;×0 = 0&#x1D43; and 0&#x1D43;×0&#x1D43; = 0 
+
+#### M + 0&#x1D43; and M × 0&#x1D43;
+
+If M is an mset &#x2260; 0&#x1D34; then M + 0&#x1D34; = M&#x1D34; and 0&#x1D34; + M = M&#x1D34; where M&#x1D34; has the property that [M M&#x1D34;] = [].
+
+If M is an mset &#x2260; 0&#x1D34; then M × 0&#x1D34; = M&#x1D34; 0&#x1D34; × M = 0&#x1D34;
+
+
+
+
+
+
 
 
 
