@@ -130,7 +130,7 @@ Need to define -1 that sitifies 1 + -1 = 0 and 1 × -1 = 1
 The anti-zero 0&#x1043; or []&#x1043; has the property that if we try to create the mset [0 0&#x1043;] the result is []
 the 0 and the 0&#x1043; anilate eachother much like particles and anti-particles do in physics. Thus 
 
-1 = [0] or [[]] and -1 = [0&#x1D34;] or []&#x1D34; results in 1 + -1 = [0 0&#x1D34;] = [] = 0
+1 = [0] or [[]] and -1 = [0&#x1D34;] or [[]&#x1D34;] results in 1 + -1 = [0 0&#x1D34;] = [] = 0
 
 ### Arithmetic with ant-izero
 
