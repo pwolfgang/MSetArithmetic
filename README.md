@@ -35,37 +35,228 @@ which can be written as [0 0 0 1 3 4 4].
 
 ## Multinumbers
 
-A muultinumber is an mset of poly numbers.
+A muultinumber is an mset of poly numbers. For example:
+
+[0 0 0 [1] [1 1] [1 1] [1 1] [1 1] [1 1 1 1 1]]
+
+Interpreting polynumbers as polynomials the "variable" &#x03B1; is used. Encapsulating a polynumber
+into a mset introduces additional "variables". &#x03B1; now becomes &#x03B1;<sub>0</sub>, then
+[&#x03B1;<sub>0</sub>] becomes &#x03B1;<sub>1</sub>. In general m&#x03B1;<sub>k</sub><sup>n</sup>
+is represented by an mset containing m copies of the mset containing n copies of the number k.
+
+ [0 0 2 3 3 3 3 [1] [1] [1] [0 1] [0 1] [0 1] [0 1] [0 1] [0 0 1 1]]
+ 
+ Represents
+ 
+ 2+α₀²+4α₀³+3α₁+5α₀α₁+α₀²α₁²
+ 
+ ## Operations
 
 ### Addition
 Addition of multisets is performed by creating a new multiset that contains the
-contents of the multisets being combined. For example:
+contents of the multisets being combined.
+
+#### Addition of natural numbers
 
 [[][]] + [[][][]] = [[][][][][]] (2 + 3 = 5)
 
-As will be seen later, addition of multisets extends beyond natural numbers.
-### Multiplication
-Multiplication of two multisets is performed by adding each mset in the LHS
-to each mset in the rhs. For example:
+#### Addition of polynumbers
 
-[[][]] × [[][][]] = [[][][] [][][]] (2 × 3 = 6)
-
-The first empty set in the LHS is added to each of the three empty sets in the
-rhs giving three empty sets. Then the second empty set is added to the three
-empty sets giving a total of six. As will be seen later this applies to more
-than natural numbers. Multiplication is associative.
-### Caret
-The caret operator (^) is similar to multiplication except that each LHS element
-is multiplied by each RHS element.
-
-[[[][]] ^ [[][][]] = [[][][][][][]]
-
-For natural numbers this operation is effectively the same as multiplication.
-For more complicated multisets it is more meaningful.
-
-
-
+[3 3 4] + 0 + 1 + [3 7] = [0 3 3 3 4 7]
 
 2α₀³+α₀⁴ + 0 + 1 + α₀³+α₀⁷ = 1+3α₀³+α₀⁴+α₀⁷
+
+#### Addition of multinumbers
+
+[[4] [3]] + [0 [4] [1 1 2]] + [4 [1 1 2]] = [0 4 [4] [4] [3] [1 1 2] [1 1 2]]
+
+α₄+α₃ + 1+α₄+α₁²α₂ + α₀⁴+α₁²α₂ = 1+α₀⁴+2α₄+α₃+2α₁²α₂ 
+
+### Multiplication
+
+Multiplication of msets is accomplished by forming all possible combinations of the contents
+of the msets being multiplied and adding them. For example [A B C] × [X Y] = [A+X A+Y B+X B+Y C+X C+Y].
+
+#### Multiplication of natural numbers
+
+[[][]] × [[][][]] = [[]+[] []+[] []+[] []+[] []+[] []+[]]
+
+since []+[] = [] the result is 
+
+[[][]] × [[][][]] = [[] [] [] [] [] []] or 2 × 3 = 6
+
+#### Multiplication of polynumbers
+
+[2 3] × [0 1 1] = [2 3 3 3 4 4]
+
+α₀²+α₀³ × 1+2α₀ = α₀²+3α₀³+2α₀⁴
+
+#### Multiplication of multinumbers
+
+[[3 8] [0 0 2]] × [2 [9] [1 1]] = [[3 8 9] [1 1 3 8] [0 0 3 8] [0 0 2 9] [0 0 1 1 2] [0 0 0 0 2]]
+
+α₃α₈+α₀²α₂ × α₀²+α₉+α₁² = α₃α₈α₉+α₁²α₃α₈+α₀²α₃α₈+α₀²α₂α₉+α₀²α₁²α₂+α₀⁴α₂
+
+### The caret operator
+
+The caret operator is similar to the multiplication operator except that the pairs are multiplied. While 
+the operation sysmbol ^ usually represents exponentation, this operation does not have the properties
+of exponenation.
+
+#### Caret applied to natural numbers
+
+For natural numbers the caret opeator is the same a multiplicaiton.
+
+[[] []] ^ [[] [] []] = [[] [] [] [] [] []]
+
+2 ^ 3 = 6
+
+#### Caret applied to polynumbers
+
+[2 3] ^ [0 1 1] = [0 0 2 2 3 3]
+
+α₀²+α₀³ ^  1+2α₀ = 2+2α₀²+2α₀³
+
+#### Caret applied to multinumbers
+
+[4 [1 2]] ^ [0 [0 3]] = [0 0 [1 2 4 5] [0 0 0 0 3 3 3 3]]
+
+α₀⁴+α₁α₂ ^ 1+α₀α₃ = 2+α₁α₂α₄α₅+α₀⁴α₃⁴
+
+## Negative numbers
+
+Need to define -1 that sitifies 1 + -1 = 0 and 1 × -1 = 1
+
+The anti-zero 0&#x1043; or []&#x1043; has the property that if we try to create the mset [0 0&#x1043;] the result is []
+the 0 and the 0&#x1043; anilate eachother much like particles and anti-particles do in physics. Thus 
+
+1 = [0] or [[]] and -1 = [0ᵃ] or [[]ᵃ] results in 1 + -1 = [0 0ᵃ] = [] = 0
+
+### Arithmetic with ant-izero
+
+#### 1 × 0 = 0
+
+1 × 0 = [0] × []
+
+Since [0 0ᵃ] = [] 
+
+1 × 0 = [0] × [] = [0] × [0 0ᵃ] = [0+0 0+0ᵃ] = [0 0ᵃ] = []
+
+Conclusion is that 0+0ᵃ = 0ᵃ and 0ᵃ+0 = 0ᵃ
+
+#### 0 × 0 = 0
+
+0 × 0 = [] × [] = [0 0ᵃ] × [0 0ᵃ] = [0+0 0+0ᵃ 0ᵃ+0 0ᵃ+0ᵃ]
+
+[0+0 0+0ᵃ 0ᵃ 0ᵃ+0ᵃ] = [0 0ᵃ 0ᵃ 0ᵃ+0ᵃ;] = [0ᵃ 0ᵃ+0ᵃ]
+
+Conclusion 0ᵃ0ᵃ = 0
+
+#### 1 ^ 0 and 0 ^ 0
+
+Similar analysis concludes that 0×0ᵃ = 0ᵃ and 0ᵃ×0 = 0ᵃ and 0ᵃ×0ᵃ = 0 
+
+#### M + 0&#x1D43; and M × 0&#x1D43;
+
+If M is an mset &#x2260; 0ᵃ then M + 0ᵃ = Mᵃ and 0ᵃ + M = Mᵃ where Mᵃ has the property that [M Mᵃ] = [].
+
+If M is an mset &#x2260; 0ᵃ then M × 0ᵃ = Mᵃ 0ᵃ × M = 0ᵃ
+
+p × q: [0ᵃ 0ᵃ 0ᵃ 0ᵃ 1 -1ᵃ 2 2 -3ᵃ -3ᵃ]
+
+#### -1 × 1
+
+-1 × 1 = [0ᵃ] × [0] = [0ᵃ+0] = [0ᵃ] = -1
+
+#### -1 × -1
+
+-1 × -1 = [0ᵃ] × [0ᵃ] = [0ᵃ+0ᵃ] = [0] = 1
+
+### Representing netagive integers
+
+Since n is the mset containing n copies of 0 [0 0 ... 0] then -n = -1 × n which is n copies of the anti-zero
+[0ᵃ 0ᵃ ... 0ᵃ]
+
+2 + -3 = [0 0] + [0ᵃ 0ᵃ 0ᵃ] = [0 0 0ᵃ 0ᵃ 0ᵃ] = [0ᵃ] = -1
+
+2 × -3 = [0 0] × [0ᵃ 0ᵃ 0ᵃ] = [0ᵃ 0ᵃ 0ᵃ 0ᵃ 0ᵃ 0ᵃ] = -6
+
+### Negative msets and anti msets
+
+If M is a pure mset (i.e. an mset that only contains msets), then -M = -1 × M = M × -1.
+
+-M = [mᵃ : m] 
+
+M = [0 1] = 1+α₀
+
+-M = [0ᵃ 1ᵃ] = -1+-1α₀
+
+M&#x00B2; = [0 1 1 2] = 1+2α₀+α₀²
+
+M&#x00B2; + -M = [0 1 1 2] + [0ᵃ 1ᵃ] = [1 2] = α₀+α₀²
+
+If M is a pure mset (i.e. an mset that only contains msets), then Mᵃ = 0ᵃ + M = M + 0ᵃ.
+
+1 + 0ᵃ = [0]ᵃ = 1ᵃ
+
+Note that 1ᵃ = [0]ᵃ is not the same as -1 = [0ᵃ]
+
+#### Examples
+
+p = [0 0 2 2 2 5] = 2+3α₀²+α₀⁵
+
+q = [0 1ᵃ 2ᵃ 3] = 1+-1α₀+-1α₀²+α₀³
+
+p + q = [0 0 0 1ᵃ 2 2 2 2ᵃ 3 5] = [0 0 0 1ᵃ 2 2 3 5] = 3+-1α₀+2α₀²+α₀³+α₀⁵
+
+p = [0 0 1] = 2+α₀
+
+q = [0 0 0 2ᵃ] = 3+-1α₀²
+
+p × q = [0+0 0+0 0+0 0+2ᵃ 0+0 0+0 0+0 0+2ᵃ 0+0 0+0 0+0 0+2ᵃ 1+0 1+0 1+0 1+2ᵃ]
+
+1 + 2ᵃ = [0] + [0 0]ᵃ = [0] + [0 0] + 0ᵃ = [0 0 0] + 0ᵃ = 3 + 0ᵃ = 3ᵃ 
+
+p × q = [0 0 0 2ᵃ 0 0 0 2ᵃ 0 0 0 2ᵃ 1 1 1 3ᵃ] = [0 0 0 0 0 0 1 1 1 2ᵃ 2ᵃ 3ᵃ]
+
+p × q = 6+3α₀+-2α₀²+-1α₀³
+
+## Integral Polynumbers
+
+p = [-2 -1 -1 -1 0 3 3] = α₀⁻²+3α₀⁻¹+1+2α₀³
+
+p = [-1 2ᵃ -3] = α₀⁻¹+-1α₀²+α₀⁻³
+
+q = [0 -1ᵃ 2 3] = 1+-1α₀⁻¹+α₀²+α₀³
+
+p + q = [-1 2ᵃ -3 0 -1ᵃ 2 3] = [0 3 -3] = 1+α₀³+α₀⁻³
+
+p = [-2 1] = α₀⁻²+α₀
+
+q = [-1 -1 3ᵃ] = 2α₀⁻¹ + -1α₀³ 
+
+p × q: [-2+-1 -2+-1 -2+3ᵃ 1+-1 1+-1 1+3ᵃ]
+
+p × q: [-3 -3 1ᵃ 0 0 4ᵃ] = 2α₀⁻³ + 2 + -1α₀ + -1α₀⁴
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
