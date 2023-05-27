@@ -130,7 +130,7 @@ Need to define -1 that sitifies 1 + -1 = 0 and 1 × -1 = 1
 The anti-zero 0&#x1043; or []&#x1043; has the property that if we try to create the mset [0 0&#x1043;] the result is []
 the 0 and the 0&#x1043; anilate eachother much like particles and anti-particles do in physics. Thus 
 
-1 = [0] or [[]] and -1 = [0&#x1D34;] or [[]&#x1D34;] results in 1 + -1 = [0 0&#x1D34;] = [] = 0
+1 = [0] or [[]] and -1 = [0ᵃ] or [[]ᵃ] results in 1 + -1 = [0 0ᵃ] = [] = 0
 
 ### Arithmetic with ant-izero
 
@@ -138,29 +138,72 @@ the 0 and the 0&#x1043; anilate eachother much like particles and anti-particles
 
 1 × 0 = [0] × []
 
-Since [0 0&#x1D34;] = [] 
+Since [0 0ᵃ] = [] 
 
-1 × 0 = [0] × [] = [0] × [0 0&#x1D34;] = [0+0 0+0&#x1D34;] = [0 0&#x1D34;] = []
+1 × 0 = [0] × [] = [0] × [0 0ᵃ] = [0+0 0+0ᵃ] = [0 0ᵃ] = []
 
-Conclusion is that 0+0&#x1D34; = 0&#x1D34; and 0&#x1D34;+0 = 0&#x1D34;
+Conclusion is that 0+0ᵃ = 0ᵃ and 0ᵃ+0 = 0ᵃ
 
 #### 0 × 0 = 0
 
-0 × 0 = [] × [] = [0 0&#x1D34;] × [0 0&#x1D34;] = [0+0 0+0&#x1D34; 0&#x1D34;+0 0&#x1D34;+0&#x1D34;]
+0 × 0 = [] × [] = [0 0ᵃ] × [0 0ᵃ] = [0+0 0+0ᵃ 0ᵃ+0 0ᵃ+0ᵃ]
 
-[0+0 0+0&#x1D34; 0&#x1D34;+0 0&#x1D34;+0&#x1D34;] = [0 0&#x1D34; 0&#x1D34; 0&#x1D34;+0&#x1D34;] = [0&#x1D34; 0&#x1D34;+0&#x1D34;]
+[0+0 0+0ᵃ 0ᵃ 0ᵃ+0ᵃ] = [0 0ᵃ 0ᵃ 0ᵃ+0ᵃ;] = [0ᵃ 0ᵃ+0ᵃ]
 
-Conclusion 0&#x1D34;+0&#x1D34; = 0
+Conclusion 0ᵃ0ᵃ = 0
 
 #### 1 ^ 0 and 0 ^ 0
 
-Similar analysis concludes that 0×0&#x1D43; = 0&#x1D43; and 0&#x1D43;×0 = 0&#x1D43; and 0&#x1D43;×0&#x1D43; = 0 
+Similar analysis concludes that 0×0ᵃ = 0ᵃ and 0ᵃ×0 = 0ᵃ and 0ᵃ×0ᵃ = 0 
 
 #### M + 0&#x1D43; and M × 0&#x1D43;
 
-If M is an mset &#x2260; 0&#x1D34; then M + 0&#x1D34; = M&#x1D34; and 0&#x1D34; + M = M&#x1D34; where M&#x1D34; has the property that [M M&#x1D34;] = [].
+If M is an mset &#x2260; 0ᵃ then M + 0ᵃ = Mᵃ and 0ᵃ + M = Mᵃ where Mᵃ has the property that [M Mᵃ] = [].
 
-If M is an mset &#x2260; 0&#x1D34; then M × 0&#x1D34; = M&#x1D34; 0&#x1D34; × M = 0&#x1D34;
+If M is an mset &#x2260; 0ᵃ then M × 0ᵃ = Mᵃ 0ᵃ × M = 0ᵃ
+
+p × q: [0ᵃ 0ᵃ 0ᵃ 0ᵃ 1 -1ᵃ 2 2 -3ᵃ -3ᵃ]
+
+#### -1 × 1
+
+-1 × 1 = [0ᵃ] × [0] = [0ᵃ+0] = [0ᵃ] = -1
+
+#### -1 × -1
+
+-1 × -1 = [0ᵃ] × [0ᵃ] = [0ᵃ+0ᵃ] = [0] = 1
+
+### Representing netagive integers
+
+Since n is the mset containing n copies of 0 [0 0 ... 0] then -n = -1 × n which is n copies of the anti-zero
+[0ᵃ 0ᵃ ... 0ᵃ]
+
+2 + -3 = [0 0] + [0ᵃ 0ᵃ 0ᵃ] = [0 0 0ᵃ 0ᵃ 0ᵃ] = [0ᵃ] = -1
+
+2 × -3 = [0 0] × [0ᵃ 0ᵃ 0ᵃ] = [0ᵃ 0ᵃ 0ᵃ 0ᵃ 0ᵃ 0ᵃ] = -6
+
+### Negative msets
+
+If M is a pure mset (i.e. an mset that only contains msets), then -M = -1 × M.
+
+-M = [mᵃ : m 
+
+M = [0 1] = 1+α₀
+
+-M = [0ᵃ 1ᵃ] = -1+-1α₀
+
+M&#x00B2; = [0 1 1 2] = 1+2α₀+α₀²
+
+M&#x00B2; + -M = [0 1 1 2] + [0ᵃ 1ᵃ] = [1 2] = α₀+α₀²
+
+Note that 1ᵃ = [0]ᵃ is not the same as -1 = [0ᵃ]
+
+
+
+
+
+
+
+
 
 
 
