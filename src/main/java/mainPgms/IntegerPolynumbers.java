@@ -62,6 +62,48 @@ public class IntegerPolynumbers {
         var sigmaX = MSet.of(MSet.of(-2),MSet.of(-2),MSet.of(-2),MSet.of(-1).makeAnti(),MSet.of(1));
         printIt("σ(x)", sigmaX);
         
+        var m = MSet.parse("[0 1]");
+        var mSq = m.mul(m);
+        var minusM = m.mul(MSet.of(-1));
+        var minusMSq = mSq.mul(MSet.of(-1));
+        printIt("m", m);
+        printIt("mSq", mSq);
+        printIt("minusM", minusM);
+        printIt("minusMSq", minusMSq);
+        printIt("m + minusM", m.add(minusM));
+        printIt("mSq + minusM", mSq.add(minusM));
+        p = MSet.parse("[0 0 2 2 2 5]");
+        q = MSet.parse("[0 1\u1D43 2\u1D43 3]");
+        printIt("p", p);
+        printIt("q", q);
+        printIt("p + q", p.add(q));   
+        p = MSet.parse("[0 0 1]");
+        q = MSet.parse("[0 0 0 2\u1D43]");
+        printIt("p", p);
+        printIt("q", q);
+        printIt("p × q", p.mul(q)); 
+        x = MSet.parse("[0 1\u1D43]");
+        var xCubed = MSet.mul(x,x,x);
+        printIt("x", x);
+        printIt("x\u00B3", xCubed);
+        var one = MSet.of(1);
+        var twoAlpha = MSet.of(2).makeAnti();
+        printIt("1", one);
+        printIt("2\u1D43", twoAlpha);
+        printIt("1 + 2\u1D43", one.add(twoAlpha));
+        p = MSet.parse("[-2 -1 -1 -1 0 3 3]");
+        printIt("p", p);
+        
+        p = MSet.parse("[-3 -1 2\u1D43]");
+        q = MSet.parse("[-1\u1D43 0 2 3]");
+        printIt("p", p);
+        printIt("q", q);
+        printIt("p + q", p.add(q));
+        p = MSet.parse("[-2 1]");
+        q = MSet.parse("[-1 -1 3\u1D43]");
+        printIt("p", p);
+        printIt("q", q);
+        printIt("p × q", p.mul(q));
         
     }
     
