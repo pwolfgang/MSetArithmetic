@@ -24,54 +24,96 @@ import java.util.NoSuchElementException;
 
 /**
  *
- * @author Paul Wolfgang <paul@pwolfgang.com>
+ * @author Paul Wolfgang <a href="mailto:paul@pwolfgang.com"></a>
  */
 public class EmptyMSet implements MSet {
     
     MSet parent;
     
+    /**
+     * {@inheritDoc}
+     * @return Always return 0
+     */
     @Override
     public int size() {return 0;}
     
+    /**
+     * {@inheritDoc}
+     * @return Always returns true.
+     */
     @Override
     public boolean isEmptySet() {
         return true;
     }
     
+    /**
+     * {@inheritDoc}
+     * @return Always returns false.
+     */
     @Override
     public boolean isAntiEmptySet() {
         return false;
     }
     
+    /**
+     * {@inheritDoc}
+     * @return Always returns "[]"
+     */
     @Override
     public String toString() {
         return "[]";
     }
     
+    /**
+     * {@inheritDoc}
+     * @return Always returns "[]0"
+     */
+    @Override
     public String toStringWithHeight() {
         return "[]0";
     }
     
+    /**
+     * {@inheritDoc}
+     * @return Always returns "0".
+     */
     @Override
     public String toIntegerString() {
         return "0";
     }
     
+    /**
+     * {@inheritDoc}
+     * @return A new EmptyMSet.
+     */
     @Override
     public EmptyMSet clone() {
         return new EmptyMSet();
     }
     
+    /**
+     * {@inheritDoc}
+     * @return A new AntiEmptySet
+     */
     @Override
     public MSet makeAnti() {
         return new AntiEmptySet();
     }
     
+    /**
+     * {@inheritDoc}
+     * @return Always returns false.
+     */
     @Override
     public boolean isAnti() {
         return false;
     }
     
+    /**
+     * {@inheritDoc}
+     * @return An empty iterator.
+     */
+
     @Override
     public Iterator<MSet> iterator() {
         return new Iterator<MSet>() {
@@ -86,78 +128,150 @@ public class EmptyMSet implements MSet {
         };
     }
     
+    /**
+     * {@inheritDoc}
+     * Invokes addEmptyMSet on other.
+     * @return The sum of this MSet and other
+     */
     @Override
     public MSet add(MSet other) {
         return other.addEmptyMSet(this);
     }
     
+    /**
+     * {@inheritDoc}
+     * The sum of two EmptyMSets is and EmptyMSet.
+     * @return The sum of this MSet and other
+     */
     @Override
     public MSet addEmptyMSet(EmptyMSet other) {
         return new EmptyMSet();
     }
     
+    /**
+     * {@inheritDoc}
+     * The sum of an AntiEmptySet and an EmptyMset is an AntiEmptySet
+     * @return The sum of this MSet and other
+     */
     @Override
     public MSet addAntiEmptySet(AntiEmptySet other) {
         return new AntiEmptySet();
     }
     
+    /**
+     * {@inheritDoc}
+     * The sum of an EmptyMSet a NonEmptyMSet is a copy of the NonEmptyMSet.
+     * @return The sum of this MSet and other
+     */
     @Override
     public MSet addNonEmptyMSet(NonEmptyMSet other) {
         return other.clone();
     }
     
+    /**
+     * {@inheritDoc}
+     * Invokes mulEmptyMSet on other.
+     * @return The product of this MSet and other
+     */
     @Override
     public MSet mul(MSet other) {
         return other.mulEmptyMSet(this);
     }
     
+    /**
+     * {@inheritDoc}
+     * The product of a EmptyMSet and an AntiEmptySet is an AntiEmptySet
+     * @return The product of this MSet and other
+     */
     @Override
     public MSet mulAntiEmptySet(AntiEmptySet other) {
         return new AntiEmptySet();
     }
     
+    /**
+     * {@inheritDoc}
+     * The product of a EmptyMSet and an EmptyMSet is an EmptyMSet
+     * @return The product of this MSet and other
+     */
     @Override
     public MSet mulEmptyMSet(EmptyMSet other) {
         return new EmptyMSet();
     }
     
+    /**
+     * {@inheritDoc}
+     * Return the product of the other MSet with the MSet containing 
+     * an EmptyMSet AntiEmptySet pair.
+     * @return The product of this MSet and other
+     */
     @Override
     public MSet mulNonEmptyMSet(NonEmptyMSet other) {
         var x = MSet.of(new EmptyMSet(), new AntiEmptySet());
         return other.mul(x);
     }
     
+    /**
+     * {@inheritDoc}
+     * Invokes crtEmptyMSet on other.
+     * @return The product of this MSet and other
+     */
     @Override
     public MSet crt(MSet other) {
         return other.crtEmptyMSet(this);
     }
     
+    /**
+     * {@inheritDoc}
+     * The crt of a EmptyMSet and an AntiEmptySet is an AnteEmptySet
+     * @return The caret of this MSet and other
+     */
     @Override
     public MSet crtAntiEmptySet(AntiEmptySet other) {
-        return other.crt(this);
+        return new AntiEmptySet();
     }
     
+    /**
+     * {@inheritDoc}
+     * The crt of a EmptyMSet and an EmptyMSet is an EmptyMSet
+     * @return The caret of this MSet and other
+     */
     @Override
     public MSet crtEmptyMSet(EmptyMSet other) {
-        return other.crt(this);
+        return new EmptyMSet();
     }
     
+    /**
+     * {@inheritDoc}
+     * Return the caret of the other MSet with the MSet containing 
+     * an EmptyMSet AntiEmptySet pair.
+     * @return The caret of this MSet and other
+     */
     @Override
     public MSet crtNonEmptyMSet(NonEmptyMSet other) {
         var x = MSet.of(new EmptyMSet(), new AntiEmptySet());
         return other.crt(x);
     }
     
+    /**
+     * {@inheritDoc}
+     * @return Always returns "0".
+     */
     @Override
     public int getHeight() {
         return 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setParent(MSet parent) {
         this.parent = parent;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getDepth() {
         if (parent != null) {
@@ -166,25 +280,38 @@ public class EmptyMSet implements MSet {
             return 0;
         }
     }
-    
-    @Override
-    public MSet Z() {
-        return new EmptyMSet();
-    }
-            
+               
+    /**
+     * {@inheritDoc}
+     * @return A new EmptyMSet
+     */
     @Override
     public MSet N() {
         return new EmptyMSet();
     }
+
+    /**
+     * {@inheritDoc}
+     * @return A new EmptyMSet
+     */
     @Override
     public MSet P() {
         return new EmptyMSet();
     }
+
+    /**
+     * {@inheritDoc}
+     * @return A new EmptyMSet
+     */
     @Override
     public MSet M() {
         return new EmptyMSet();
     }
     
+    /**
+     * {@inheritDoc}
+     * @return True if other is either an EmptyMSet or an AntiEmptySet.
+     */
     @Override
     public boolean equalsNoAnti(Object o) {
         if (o == null) return false;
@@ -193,6 +320,10 @@ public class EmptyMSet implements MSet {
         return oClass == EmptyMSet.class || oClass == AntiEmptySet.class;
     }
 
+    /**
+     * {@inheritDoc}
+     * @return True if other is either an EmptyMSet.
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;
@@ -200,16 +331,28 @@ public class EmptyMSet implements MSet {
         return (this.getClass() == o.getClass());
     }
     
+    /**
+     * {@inheritDoc}
+     * @return "0"
+     */
     @Override
     public String asPolyNumber() {
         return "0";
     }
     
+    /**
+     * {@inheritDoc}
+     * @return An empty list
+     */
     @Override
     public List<MSet> getContent() {
         return Collections.emptyList();
     }
     
+    /**
+     * {@inheritDoc}
+     * @return a new AntiEmptySet.
+     */
     @Override
     public MSet negateExponent() {
         return new AntiEmptySet();

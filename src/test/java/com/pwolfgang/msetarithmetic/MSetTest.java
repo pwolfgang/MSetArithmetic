@@ -24,10 +24,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 
-/**
- *
- * @author Paul Wolfgang <paul@pwolfgang.com>
- */
 public class MSetTest {
     
     public MSetTest() {
@@ -248,6 +244,14 @@ public class MSetTest {
         printIt("3", three);
         printIt("2 ^ 3", r);
         assertEquals(e, r);       
+    }
+    
+    @Test
+    public void testCrtEmptySets() {
+        var x = new EmptyMSet();
+        var y = new EmptyMSet();
+        var z = x.crt(y);
+        assertEquals(new EmptyMSet(), z);
     }
     
     @Test

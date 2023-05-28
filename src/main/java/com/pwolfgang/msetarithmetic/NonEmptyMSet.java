@@ -28,7 +28,7 @@ import java.util.TreeSet;
 
 /**
  *
- * @author Paul Wolfgang <paul@pwolfgang.com>
+ * @author Paul Wolfgang <a href="mailto:paul@pwolfgang.com"></a>
  */
 public class NonEmptyMSet implements MSet {
     
@@ -196,9 +196,9 @@ public class NonEmptyMSet implements MSet {
     public Iterator<MSet> iterator() {
         return content.iterator();
     }
-
+      
     /**
-     * Remove any pairs of equal MSet - anti MSet. 
+     * Remove any pairs of equal MSet and anti-MSet. 
      * @param mSets A list of MSets.
      */
     static void annihilate(List<MSet> mSets) {
@@ -343,10 +343,6 @@ public class NonEmptyMSet implements MSet {
         this.parent = parent;
     }
     
-    @Override
-    public MSet Z() {
-        return new EmptyMSet();
-    }
     
     @Override
     public MSet N() {
@@ -512,13 +508,11 @@ public class NonEmptyMSet implements MSet {
     
     int countSets(List<MSet> el) {
         int count = 0;
-        var itr = el.iterator();
-        while (itr.hasNext()) {
-            var c = itr.next();
+        for (var c : el) {
             if (c.isAnti()) {
                 count--;
             } else {
-                    count++;
+                count++;
             }
         }
         return count;

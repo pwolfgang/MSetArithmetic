@@ -22,7 +22,7 @@ import java.io.PrintStream;
 
 /**
  *
- * @author Paul Wolfgang <paul@pwolfgang.com>
+ * @author Paul Wolfgang <a href="mailto:paul@pwolfgang.com"></a>
  */
 public class Main {
     

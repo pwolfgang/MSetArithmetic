@@ -20,10 +20,6 @@ package com.pwolfgang.msetarithmetic;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
 
-/**
- *
- * @author Paul Wolfgang <paul@pwolfgang.com>
- */
 public class testEquals {
     
     @Test

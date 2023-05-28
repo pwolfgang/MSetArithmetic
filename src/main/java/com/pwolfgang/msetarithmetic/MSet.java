@@ -28,7 +28,7 @@ import java.util.List;
  * This is based on N.J. Wildberger Math Foundations lectures beginning with
  * lecture 227 "Box Arithmetic A multiset approach." 
  * 
- * @author Paul Wolfgang <paul@pwolfgang.com>
+ * @author Paul Wolfgang <a href="mailto:paul@pwolfgang.com"></a>
  */
 public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
 
@@ -94,10 +94,15 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
         }
     }
     
+    /** Determine if two MSets have equal contents, but one may be the anti
+     * of the other.
+     * @param o The other object.
+     * @return True if the contents are equal.
+     */
     public boolean equalsNoAnti(Object o);
 
     /**
-     * Copnstruct an MSet from a list of MSets
+     * Copnstruct an MSet from an array of MSets
      * @param mSets The list of MSets
      * @return The resulting MSet
      */
@@ -125,7 +130,7 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
     /**
      * Construct an MSet that represents an integer. The integer n is 
      * represented by an MSet containing n empty MSets. If n is negative
-     * the resulting MSet contains n anti empty MSets. 
+     * the resulting MSet contains n anti-empty MSets. 
      * @param n
      * @return 
      */
@@ -145,14 +150,14 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
 
     /**
      * Make an equivalent anti version of this MSet. This is a deep copy
-     * with the anti flag set on the copy. When applied to an anti MSet, the
+     * with the anti flag set on the copy. When applied to an anti-MSet, the
      * result is to make a copy with the anti flag cleared.
      * @return an anti copy of this MSet
      */
     MSet makeAnti();
 
     /**
-     * Indicate that this is and anti MSet
+     * Indicate that this is and anti-MSet
      * @return true if an anti MSet
      */
     boolean isAnti();
@@ -164,26 +169,89 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
     @Override
     Iterator<MSet> iterator();
     
+    /** 
+     * Return a new MSet that is the sum of this MSet and another MSet.
+     * If both MSets are empty, then return the result of addOrMultEmptySets. 
+     * If one of the MSets is the anti empty MSet, then return the anti of the 
+     * other MSet. Otherwise the result sum of two MSets is an MSet that 
+     * contains the contents of the two MSets. After the combination of the two 
+     * MSets any pairs of object and anti-object are removed.
+     * @param other The other MSet
+     * @return The sum of this and other
+     */
     MSet add(MSet other);
+    
+    /**
+     * Return a new MSet that is the sum of this MSet an another EmptyMSet.
+     * @param other The other EmptyMSet
+     * @return The sum of this and other
+     */
     MSet addEmptyMSet(EmptyMSet other);
+    /**
+     * Return a new MSet that is the sum of this MSet an another AntiEmptySet.
+     * @param other The other AntiEMptySet.
+     * @return The sum of this and other
+     */
     MSet addAntiEmptySet(AntiEmptySet other);
+    /**
+     * Return a new MSet that is the sum of this MSet and another NonEmptyMSet.
+     * @param other The other NonEmptyMSet.
+     * @return The sum of this and other.
+     */
     MSet addNonEmptyMSet(NonEmptyMSet other);
+    /**
+     * Return a new MSet that is the product of this MSet an another MSet.
+     * The result is an MSet of the pair-wise sums of the contents of the 
+     * input MSets. 
+     * @param other The other MSet.
+     * @return this times other
+     */
     MSet mul(MSet other);
+    /**
+     * Return a new MSet that is the product of this MSet an another EmptyMSet.
+     * @param other The other EmptyMSet.
+     * @return this times other
+     */
     MSet mulEmptyMSet(EmptyMSet other);
+    /**
+     * Return a new MSet that is the product of this MSet an another AntiEmptySet.
+     * @param other The other AntiEmptySet.
+     * @return this times other
+     */
     MSet mulAntiEmptySet(AntiEmptySet other);
+    /**
+     * Return a new MSet that is the product of this MSet an another NonEmptyMSet.
+     * @param other The other NonEmptyMSet.
+     * @return this times other
+     */
     MSet mulNonEmptyMSet(NonEmptyMSet other);
+    /**
+     * Return an MSet that is the result of the caret operator.
+     * @param other The other MSet
+     * @return this ^ other
+     */
     MSet crt(MSet other);
+    /**
+     * Return an MSet that is the result of the caret operator.
+     * @param other The other EmptyMSet
+     * @return this ^ other
+     */
     MSet crtEmptyMSet(EmptyMSet other);
+    /**
+     * Return an MSet that is the result of the caret operator.
+     * @param other The other AntiEmptySet
+     * @return this ^ other
+     */
     MSet crtAntiEmptySet(AntiEmptySet other);
+    /**
+     * Return an MSet that is the result of the caret operator.
+     * @param other The other NonEmptyMSet
+     * @return this ^ other
+     */
     MSet crtNonEmptyMSet(NonEmptyMSet other);
 
     /**
-     * Return the sum of two MSets. If both MSets are empty, then return
-     * the result of addOrMultEmptySets. If one of the MSets is the 
-     * anti empty MSet, then return the anti of the other MSet. Otherwise
-     * the result sum of two MSets is an MSet that contains the contents
-     * of the two MSets. After the combination of the two MSets any
-     * pairs of object and anti-object are removed.
+     * Return the sum of two MSets. 
      * @param x one MSet
      * @param y the other MSet
      * @return x + y
@@ -193,11 +261,8 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
     }
 
     /**
-     * Compute the sum of a list of MSets. The result is the combination
-     * of the contents of the input MSets. If one of the input MSets is
-     * the empty MSet it is replaced by a pair of an empty MSet and an anti
-     * empty MSet. After the combination of the two MSets any
-     * pairs of object and anti-object are removed.
+     * Compute the sum of an array of MSets. The result is the combination
+     * of the contents of the input MSets. 
      * @param mSets An array of MSets.
      * @return The sum of the MSets.
      */
@@ -221,33 +286,6 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
         }
     }
 
-    /**
-     * Remove any pairs of equal MSet - anti MSet. 
-     * @param mSets A list of MSets.
-     */
-    static void annihilate(List<MSet> mSets) {
-        boolean foundPair = true;
-        while (foundPair) {
-            foundPair = false;
-            for (int i = 0; i < mSets.size(); i++) {
-                var mSet1 = mSets.get(i);
-                for (int j = i + 1; j < mSets.size(); j++) {
-                    var mSet2 = mSets.get(j);
-                    if (((mSet1.isAnti() && !mSet2.isAnti())
-                            || (!mSet1.isAnti() && mSet2.isAnti()))
-                            && mSet1.equals(mSet2)) {
-                        mSets.remove(j);
-                        mSets.remove(i);
-                        foundPair = true;
-                        break;
-                    }
-                }
-                if (foundPair) {
-                    break;
-                }
-            }
-        }
-    }
 
     /**
      * Compute the product of two MSets. The product is formed by adding
@@ -261,7 +299,7 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
     }
 
     /**
-     * Compute the product of a list of MSets. The product is formed
+     * Compute the product of an array of MSets. The product is formed
      * by taking the first two and forming their product. Each subsequent
      * MSet is then multiplied by the result.
      * @param mSets A list of MSets
@@ -299,7 +337,7 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
     }
 
     /**
-     * Compute the caret operator on a list os MSets.
+     * Compute the caret operator on an array of MSets.
      * @param mSets The MSets
      * @return The caret operator applied to the list.
      */
@@ -351,7 +389,9 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
      * Count of the zero level of the MSet tree.
      * @return zero (The empty MSet).
      */
-    MSet Z();
+    default MSet Z() {
+        return new EmptyMSet();
+    }
 
     /**
      * The number of children of the root.
@@ -383,8 +423,20 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
      */
     List<MSet> getContent();
     
+    /**
+     * Multiply this MSet by -1.
+     * @return A copy of this MSet where each element is the anti of the 
+     * original contents.
+     */
     MSet negateExponent();
     
+    /**
+     * If this MSet is a polynumber, return the polynumber with
+     * each exponent negated. This is accomplished by multiplying each element
+     * of this MSet by -1. The effect of this method on MSets that do not
+     * represent a polynumber is not defined.
+     * @return A copy of this polynumber with each exponent negated.
+     */
     default MSet sigma() {
         var c = getContent();
         if (c.isEmpty()) return this;
@@ -396,7 +448,7 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
     /** Convert an integer String representation of an MSet into an MSet.
      * 
      * @param s The String to be parsed
-     * @return MSet equivalend
+     * @return MSet equivalent
      */
     static MSet parse(String s) {
         List<MSet> result = new ArrayList<>();
@@ -412,13 +464,14 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
         }
     }
     
-    /** Congert an integer String representation of an MSet into an MSet
-     * An MSet is a list of MSets enclosed within '[' and ']'. An integer 
-     * <i>n</i> represents <i>n</i> empty MSets. If <i>n</i> is negative
+    /** *  Convert an integer String representation of an MSet into an MSet
+     * An MSet is a list of MSets enclosed within '[' and ']'.An integer 
+    <i>n</i> represents <i>n</i> empty MSets. If <i>n</i> is negative
      * these are anti empty MSets.
      * @param s The String to be parsed
      * @param k The index one passed the opening '['
-     * @return 
+     * @param result The list containing the result to date.
+     * @return The index of the closing ']'
      */
     private static int parse(String s, int k, List<MSet> result) {
             for (char c = s.charAt(k); c != ']'; c=s.charAt(++k)) {

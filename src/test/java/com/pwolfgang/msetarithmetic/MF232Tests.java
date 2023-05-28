@@ -25,10 +25,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
     
-/**
- *
- * @author Paul Wolfgang <paul@pwolfgang.com>
- */
 public class MF232Tests {
     
     public MF232Tests() {

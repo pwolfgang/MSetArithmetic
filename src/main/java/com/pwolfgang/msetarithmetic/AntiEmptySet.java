@@ -24,7 +24,7 @@ import java.util.NoSuchElementException;
 
 /**
  *
- * @author Paul Wolfgang <paul@pwolfgang.com>
+ * @author Paul Wolfgang <a href="mailto:paul@pwolfgang.com"></a>
  */
 public class AntiEmptySet implements MSet {
 

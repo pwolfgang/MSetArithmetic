@@ -23,7 +23,7 @@ import java.io.UnsupportedEncodingException;
 
 /**
  *
- * @author Paul Wolfgang <paul@pwolfgang.com>
+ * @author Paul Wolfgang <a href="mailto:paul@pwolfgang.com"></a>
  */
 public class IntegerPolynumbers {
 
@@ -59,8 +59,11 @@ public class IntegerPolynumbers {
         printIt("p × q", p.mul(q));
         var x = MSet.of(MSet.of(-1), MSet.of(1).makeAnti(), MSet.of(2),MSet.of(2),MSet.of(2));
         printIt("x", x);
-        var sigmaX = MSet.of(MSet.of(-2),MSet.of(-2),MSet.of(-2),MSet.of(-1).makeAnti(),MSet.of(1));
+        var sigmaX_e = MSet.of(MSet.of(-2),MSet.of(-2),MSet.of(-2),MSet.of(-1).makeAnti(),MSet.of(1));
+        printIt("expected σ(x)", sigmaX_e);
+        var sigmaX = x.sigma();
         printIt("σ(x)", sigmaX);
+        System.out.println(sigmaX.equals(sigmaX_e) ? "Are Equal": "NOT EQUAL");
         
         var m = MSet.parse("[0 1]");
         var mSq = m.mul(m);
