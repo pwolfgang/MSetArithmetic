@@ -27,7 +27,7 @@ import java.util.StringJoiner;
 import java.util.TreeSet;
 
 /**
- *
+ * This class models a non-empty mset
  * @author Paul Wolfgang <a href="mailto:paul@pwolfgang.com"></a>
  */
 public class NonEmptyMSet implements MSet {
@@ -38,20 +38,36 @@ public class NonEmptyMSet implements MSet {
     
     SortedSet<MSet> content;
     
+    /**
+     * {@inheritDoc}
+     * @return Always returns false
+    */
     @Override
     public boolean isEmptySet() {
         return false;
     }
     
+    /**
+     * {@inheritDoc}
+     * @return Always returns false
+    */
     @Override
     public boolean isAntiEmptySet() {
         return false;
     }
     
+    /**
+     * Construct a new NonEmptyMset from an array of MSets.
+     * @param mSets The array of MSets
+     */
     NonEmptyMSet(MSet... mSets) {
         this(Arrays.asList(mSets));
     }
     
+    /**
+     * Construct a new NonEmptyMset from a List of MSets.
+     * @param mSets The List of MSets
+     */
     NonEmptyMSet(List<MSet> mSets) {
         content = new TreeSet<>(MSet::compareTo);
         int maxHeight = 0;
@@ -66,6 +82,13 @@ public class NonEmptyMSet implements MSet {
         height = maxHeight+1;
     }
     
+    /**
+     * Construct a non0empty mset that represents the integer n.
+     * This mset will contain n EmptyMSets if n &gt; 0 or n AntiEmptySets if
+     * n &lt; 0
+     * @throws IllegalArgumentException if n == 0
+     * @param n The integer to be represented.
+     */
     NonEmptyMSet(int n) {
         content = new TreeSet<>(MSet::compareTo);
         if (n > 0) {
@@ -86,6 +109,10 @@ public class NonEmptyMSet implements MSet {
         height=1;
     } 
     
+    /**
+     * Construct a new NonEmptyMset from a SortedSet of MSets.
+     * @param mSets The SortedSet of MSets
+     */
     NonEmptyMSet(SortedSet<MSet> c) {
         content = new TreeSet<>(MSet::compareTo);
         int maxHeight = 0;
@@ -100,6 +127,10 @@ public class NonEmptyMSet implements MSet {
         height = maxHeight+1;
     }
     
+    /**
+     * Make a deep copy of this MSet.
+     * @return a deep copy of this MSet
+     */
     @Override
     public NonEmptyMSet clone() {
         List<MSet> contentsList = new ArrayList<>();
@@ -109,6 +140,10 @@ public class NonEmptyMSet implements MSet {
         return theClone;
     }
     
+    /**
+     * Make a copy of the mset and flip the anti flag.
+     * @return An anti copy of this mser.
+     */
     @Override
     public MSet makeAnti() {
         var result = clone();
@@ -116,16 +151,28 @@ public class NonEmptyMSet implements MSet {
         return result;
     }
     
+    /**
+     * {@inheritDoc}
+     * @return the value of the anti flag. 
+     */
     @Override
     public boolean isAnti() {
         return anti;
     }
     
+    /**
+     * {@inheritDoc}
+     * @return the number of elements in this mset
+     */
     @Override
     public int size() {
         return content.size();
     }
     
+    /**
+     * {@inheritDoc}
+     * @return A String consisting of nested [...]
+     */
     @Override
     public String toString() {
         var stj = anti ? new StringJoiner(" ", "[", "]\u1D43") : new StringJoiner(" ", "[", "]");
@@ -133,6 +180,10 @@ public class NonEmptyMSet implements MSet {
         return stj.toString();
     }
     
+    /**
+     * {@inheritDoc}
+     * @return A String consisting of nested [...]n where n is the height
+     */
     @Override
     public String toStringWithHeight() {
         var stj = new StringJoiner(" ", "[", "]");
@@ -140,6 +191,11 @@ public class NonEmptyMSet implements MSet {
         return String.format("%s%d",stj.toString(),height);
     }
         
+    /**
+     * {@inheritDoc}
+     * @return A String consisting of nested [...] with the innermost mset
+     * replaced by an integer
+     */
     @Override
     public String toIntegerString() {
         int countOfEmptySets = 0;
@@ -192,6 +248,10 @@ public class NonEmptyMSet implements MSet {
         }
     }
     
+    /**
+     * {@inheritDoc}
+     * @return An iterator to the contents of this mset.
+     */
     @Override
     public Iterator<MSet> iterator() {
         return content.iterator();
@@ -226,21 +286,46 @@ public class NonEmptyMSet implements MSet {
     }
     
     
+    /**
+     * {@inheritDoc}
+     * Invokes the addNonEmptyMSet method on the other parameter
+     * @param other The other mset
+     * @return the sum of this and other
+     */
     @Override
     public MSet add(MSet other) {
         return other.addNonEmptyMSet(this);
     }
     
+    /**
+     * {@inheritDoc}
+     * The sum of an non-empty mset and an empty mset is a copy of this
+     * @param other The other mset
+     * @return a copy of this
+     */
     @Override
     public MSet addEmptyMSet(EmptyMSet other) {
         return this.clone();
     }
     
+    /**
+     * {@inheritDoc}
+     * The sum of an non-empty mset and an empty mset is an anti-copy of this
+     * @param other The other mset
+     * @return an anti-copy of this
+     */
     @Override
     public MSet addAntiEmptySet(AntiEmptySet other) {
-        return this.makeAnti();
+        return this.clone().makeAnti();
     }
     
+    /**
+     * {@inheritDoc}
+     * The sum of two non-empty mset is an mset containing the contents of both
+     * with any mset-anti-mset pairs removed.
+     * @param other The other non-empty mset
+     * @return The sum of this and other.
+     */
     @Override
     public MSet addNonEmptyMSet(NonEmptyMSet other) {
         List<MSet> list = new LinkedList<>();
@@ -261,21 +346,45 @@ public class NonEmptyMSet implements MSet {
         }
     }
     
+    /**
+     * {@interitDoc}
+     *  Apply mulNonEmptyMSet method on other
+     * @param other
+     * @return The product of this and other. 
+     */
     @Override
     public MSet mul(MSet other) {
         return other.mulNonEmptyMSet(this);
     }
     
+    /**
+     * {@inheritDoc}
+     * The product of an empty mset and this is an empty mset.
+     * @param other An empty mset
+     * @return a new EmptyMSet.
+     */
     @Override
     public MSet mulEmptyMSet(EmptyMSet other) {
         return new EmptyMSet();
     }
     
+    /**
+     * {@inheritDoc}
+     * The product of an anti-empty mset and this is an anti-empty mset.
+     * @param other An anti-empty mset
+     * @return a new AntiEmptySet
+     */
     @Override
     public MSet mulAntiEmptySet(AntiEmptySet other) {
         return new AntiEmptySet();
     }
     
+    /**
+     * {@inheritDoc}
+     * The product of two non-empty msets is the pair-wise sum of their contents.
+     * @param other A non-empty mset
+     * @return the product of the two non-empty msets
+     */
     @Override
     public MSet mulNonEmptyMSet(NonEmptyMSet other) {
         List<MSet> resultList = new ArrayList<>();
@@ -293,21 +402,45 @@ public class NonEmptyMSet implements MSet {
         
     }
     
+    /**
+     * {@inheritDoc}
+     * Apply the crtNonEmptyMSet of other to this.
+     * @param other The other mset
+     * @return The result of the crt operator
+     */
     @Override
     public MSet crt(MSet other) {
         return other.crtNonEmptyMSet(this);
     }
     
+    /**
+     * {@inheritDoc}
+     * Form the crt of this an an empty mset
+     * @param other an empty mset
+     * @return a new EmptyMset
+     */
     @Override
     public MSet crtEmptyMSet(EmptyMSet other) {
         return new EmptyMSet();
     }
     
+    /**
+     * {@inheritDoc}
+     * Form the crt of this an an anit-empty mset
+     * @param other an anti-empty mset
+     * @return a new AntiEmptyset
+     */
     @Override
     public MSet crtAntiEmptySet(AntiEmptySet other) {
         return new AntiEmptySet();
     }
     
+    /**
+     * {@inheritDoc}
+     * The crt of two non-empty msets is the pair-wise product of their contents.
+     * @param other A non-empty mset
+     * @return The crt of the two non-empty msets.
+     */
     @Override
     public MSet crtNonEmptyMSet(NonEmptyMSet other) {
         List<MSet> resultList = new ArrayList<>();
@@ -324,11 +457,19 @@ public class NonEmptyMSet implements MSet {
         }        
     }
     
+    /**
+     * Return the height.
+     * @return the height
+     */
     @Override
     public int getHeight() {
         return height;
     }
     
+    /**
+     * Return the depth.
+     * @return the depth.
+     */
     @Override
     public int getDepth() {
         if (parent != null) {
@@ -338,17 +479,29 @@ public class NonEmptyMSet implements MSet {
         }
     }
     
+    /**
+     * Set the parent
+     * @param parent the parent
+     */
     @Override
     public void setParent(MSet parent) {
         this.parent = parent;
     }
     
     
+    /**
+     * Return the size of this mset
+     * @return the size of this mset
+     */
     @Override
     public MSet N() {
         return MSet.of(content.size());
     }
     
+    /**
+     * Create an mset by applying N to each of the content msets.
+     * @return The reulting mset.
+     */
     @Override
     public MSet P() {
         List<MSet> mSets = new ArrayList<>();
@@ -357,6 +510,10 @@ public class NonEmptyMSet implements MSet {
         return MSet.of(mSetArray);
     }
     
+    /**
+     * Create an mset by applying P to each of the content msets.
+     * @return The reulting mset.
+     */
     @Override
     public MSet M() {
         List<MSet> mSets = new ArrayList<>();
@@ -365,6 +522,13 @@ public class NonEmptyMSet implements MSet {
         return MSet.of(mSetArray);        
     }
     
+    /**
+     * Determine if these two msets are equal, but one may be the anti of the other.
+     * Note that the contents must be equal and the anti-flag difference only
+     * is tested at the top level.
+     * @param o The other object
+     * @return True of this an o are equal or are equal with the anti flag set on one.
+     */
     @Override
     public boolean equalsNoAnti(Object o) {
         if (o == null) return false;
@@ -394,6 +558,11 @@ public class NonEmptyMSet implements MSet {
         }
     }
 
+    /**
+     * Determine of this non-empty mset and the other are equal. 
+     * @param o The other non-empty mset
+     * @return True if they are equal.
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;
@@ -450,15 +619,11 @@ public class NonEmptyMSet implements MSet {
         return result;
     }
     
-    String asString(List<List<MSet>> equalList) {
-        var strJoiner = new StringJoiner(" + ","[", "]");
-        equalList.forEach((List<MSet> el) -> {
-            MSet[] ar = el.toArray(MSet[]::new);
-            strJoiner.add(MSet.of(ar).toIntegerString());
-        });
-        return strJoiner.toString();
-    }
     
+    /**
+     * {@inheritDoc }
+     * @return A polynumber representation of this mset.
+     */
     @Override
     public String asPolyNumber() {
         List<List<MSet>> list = groupEquals();
@@ -539,11 +704,20 @@ public class NonEmptyMSet implements MSet {
         return stb.toString();
     }
     
+    /**
+     * Return a copy of the content as a list.
+     * @return The content as a list.
+     */
     @Override
     public List<MSet> getContent() {
         return new ArrayList<>(content);
     }
 
+    /**
+     * Create a copy of this mset with anti-copies of the content. Preserve
+     * the anti state of this mset in the copy.
+     * @return An anti copy of this mset.
+     */
     @Override
     public MSet negateExponent() {
         var c = getContent();

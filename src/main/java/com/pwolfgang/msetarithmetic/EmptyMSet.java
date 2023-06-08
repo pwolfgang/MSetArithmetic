@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- *
+ * This class models the empty mset.
  * @author Paul Wolfgang <a href="mailto:paul@pwolfgang.com"></a>
  */
 public class EmptyMSet implements MSet {
@@ -113,7 +113,6 @@ public class EmptyMSet implements MSet {
      * {@inheritDoc}
      * @return An empty iterator.
      */
-
     @Override
     public Iterator<MSet> iterator() {
         return new Iterator<MSet>() {
