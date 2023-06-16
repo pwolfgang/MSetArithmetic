@@ -527,5 +527,50 @@ public interface MSet extends Comparable<MSet>, Cloneable, Iterable<MSet> {
         }
         return n;
     }
-
+    
+    /**
+     * Generate the nth symetric binomial
+     * @param n
+     * @return &#x03B1;<sup>-n</sup> - &#X03B1<sup>n</sup>
+     */
+    public static MSet B(int n) {
+        return MSet.of(MSet.of(-n),MSet.of(n));
+    }
+    
+    /**
+     * Generate the nth alternating binomial
+     * @param n
+     * @return -&#x03B1;<sup>-n</sup> - &#X03B1<sup>n</sup>
+    */
+    public static MSet A(int n) {
+        if (n == 0) {
+            return MSet.of(0);
+        } else {
+            return MSet.of(MSet.of(-n).makeAnti(), MSet.of(n));
+        }
+    }
+    
+    /**
+     * Generate the nth central polynumber
+     * @param n
+     * @return The nth central polynumber
+     */
+    public static MSet C(int n) {
+        if (n == 0) {
+            return MSet.of(1);
+        }
+        MSet result;
+        if ((n & 1) == 0) { // n is even
+            result = MSet.of(1);
+            for (int i = 2; i<= n; i+=2) {
+                result = result.add(MSet.B(i));
+            }
+        } else { // n is odd
+            result = MSet.of(0);
+            for (int i = 1; i <= n; i+=2) {
+                result = result.add(MSet.B(i));
+            }
+        }
+        return result;
+    }
 }
