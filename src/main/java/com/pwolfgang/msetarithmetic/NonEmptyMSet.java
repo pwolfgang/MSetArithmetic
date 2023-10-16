@@ -394,11 +394,19 @@ public class NonEmptyMSet implements MSet {
             }
         }
         annihilate(resultList);
+        MSet result;
         if (!resultList.isEmpty()) {
-            return new NonEmptyMSet(resultList);
+            result = new NonEmptyMSet(resultList);
         } else {
-            return new EmptyMSet();
+            result = new EmptyMSet();
         }
+        boolean resultIsAnti = (this.anti || other.isAnti()) && !(this.anti && other.isAnti());
+        if (resultIsAnti) {
+            return result.makeAnti();
+        } else {
+            return result;
+        }
+
         
     }
     

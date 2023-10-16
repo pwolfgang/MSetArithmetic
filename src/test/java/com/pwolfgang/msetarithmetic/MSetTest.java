@@ -315,5 +315,18 @@ public class MSetTest {
         assertNotEquals(alphaSubOne_1,twoAlphaTwoSq_1);
     }
     
+    @Test
+    public void testMultiply() {
+        System.out.println("\n\n\nNew Multiply Test");
+        var A = MSet.of(MSet.of(0), MSet.of(2).makeAnti());
+        var B = MSet.of(MSet.of(1).makeAnti(),MSet.of(0),MSet.of(2)).makeAnti();
+        var C = MSet.of(MSet.of(1).makeAnti(),MSet.of(0), MSet.of(3), MSet.of(4).makeAnti()).makeAnti();
+        printIt("A",A);
+        printIt("B",B);
+        printIt("C",C);
+        printIt("AxB",A.mul(B));
+        assertEquals(C,A.mul(B));
+    }
+    
     
 }

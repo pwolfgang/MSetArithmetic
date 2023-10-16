@@ -35,6 +35,7 @@ public class Main {
     
     public static void main(String... args) throws Exception {
         System.setOut(new PrintStream(System.out, true, "UTF-8"));
+        intExample();
         polyNumber();
         multiNumber();
         polySumExample();
@@ -44,6 +45,18 @@ public class Main {
         multiNumberVSpolyNumber();
         biPolyNumberExample();
         caretExample();
+    }
+    
+    static void intExample() {
+        var three = MSet.of(3);
+        var threeAnti = MSet.of(3).makeAnti();
+        var minusThree = MSet.of(-3);
+        var minusThreeAnti = MSet.of(-3).makeAnti();
+        printIt("3", three);
+        printIt("3\u1d43", threeAnti);
+        printIt("-3", minusThree);
+        printIt("-3\u1d43", minusThreeAnti);
+        
     }
     
     static void polySumExample() {
