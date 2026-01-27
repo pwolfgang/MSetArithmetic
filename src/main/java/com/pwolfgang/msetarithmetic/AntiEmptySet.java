@@ -61,7 +61,7 @@ public class AntiEmptySet implements MSet {
      */
     @Override
     public String toString() {
-        return "\u23a3 \u23a6\u1D43";
+        return "[]\u1D43";
     }
     
     /**
@@ -70,7 +70,7 @@ public class AntiEmptySet implements MSet {
      */
     @Override
     public String toStringWithHeight() {
-        return "\u23a3 \u23a6\u1D430";
+        return "[]\u1D430";
     }
     
     /**
