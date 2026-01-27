@@ -61,7 +61,7 @@ public class EmptyMSet implements MSet {
      */
     @Override
     public String toString() {
-        return "[]";
+        return "\u23a3 \u23a6";
     }
     
     /**
@@ -70,7 +70,7 @@ public class EmptyMSet implements MSet {
      */
     @Override
     public String toStringWithHeight() {
-        return "[]0";
+        return "\u23a3 \u23a60";
     }
     
     /**

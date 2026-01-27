@@ -175,7 +175,7 @@ public class NonEmptyMSet implements MSet {
      */
     @Override
     public String toString() {
-        var stj = anti ? new StringJoiner(" ", "[", "]\u1D43") : new StringJoiner(" ", "[", "]");
+        var stj = anti ? new StringJoiner(", ", "\u23a3 ", " \u23a6\u1D43") : new StringJoiner(", ", "\u23a3 ", " \u23a6");
         content.forEach(m -> stj.add(m.toString()));
         return stj.toString();
     }
@@ -186,7 +186,7 @@ public class NonEmptyMSet implements MSet {
      */
     @Override
     public String toStringWithHeight() {
-        var stj = new StringJoiner(" ", "[", "]");
+        var stj = new StringJoiner(", ","u\23a3 ", " \u23a6");
         content.forEach(m -> stj.add(m.toStringWithHeight()));
         return String.format("%s%d",stj.toString(),height);
     }
